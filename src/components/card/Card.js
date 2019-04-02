@@ -29,6 +29,7 @@ class Card extends React.Component {
   cardRef = React.createRef();
 
   getLocation = () => {
+    console.log(this.cardRef);
     const { x, y } = this.cardRef.current.getClientRects()[0];
     return { x, y };
   };
