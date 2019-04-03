@@ -1,6 +1,8 @@
 import * as actionTypes from "actions/types";
 import { id0, id1, id2 } from "./lists";
 
+import axios from 'axios';
+
 const defaultState = {
   boards: {
     0: {
@@ -27,6 +29,11 @@ export default (state = defaultState, action) => {
       if (!newState.boards[boardId]) {
         newState.boardIds.push(boardId);
         newState.boards[boardId] = action.payload;
+        axios({
+          method: 'post',
+          url: '/board/add',
+          data: action.payload
+        });
       }
       return newState;
     }
@@ -37,6 +44,11 @@ export default (state = defaultState, action) => {
       if (newBoards[boardId]) {
         const index = newBoards[boardId].listIds.indexOf(listId);
         newBoards[boardId].listIds.splice(index, 1);
+        axios({
+          method: 'post',
+          url: '/board/delete',
+          data: newBoards
+        });
       }
       return { ...state, boards: newBoards };
     }
@@ -46,6 +58,11 @@ export default (state = defaultState, action) => {
       const newState = Object.assign({}, state);
       if (newState.boards[boardId]) {
         newState.boards[boardId].listIds.push(listId);
+        axios({
+          method: 'post',
+          url: '/board/attach',
+          data: newState
+        });
       }
       return newState;
     }
@@ -56,6 +73,11 @@ export default (state = defaultState, action) => {
       if (newState.boards[boardId]) {
         newState.boards[boardId].name = name;
         newState.boards[boardId].editing = editing;
+        axios({
+          method: 'post',
+          url: '/board/update',
+          data: newState
+        });
       }
       return newState;
     }

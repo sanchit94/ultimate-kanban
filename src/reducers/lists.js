@@ -1,5 +1,7 @@
 import uuid from "uuid/v4";
 
+import axios from 'axios';
+
 import * as actionTypes from "actions/types";
 
 export const id0 = uuid();
@@ -19,6 +21,11 @@ const copyState = state => {
 export default (state = defaultState, action) => {
   switch (action.type) {
     case actionTypes.CREATE_LIST: {
+      axios({
+        method: 'post',
+        url: '/list/add',
+        data: action.payload
+      });
       return { ...state, [action.payload.id]: action.payload };
     }
 
@@ -26,6 +33,11 @@ export default (state = defaultState, action) => {
       const newState = Object.assign({}, state);
       if (newState[action.payload.listId]) {
         delete newState[action.payload.listId];
+        axios({
+          method: 'post',
+          url: '/list/delete',
+          data: newState
+        });
       }
       return newState;
     }
@@ -34,6 +46,11 @@ export default (state = defaultState, action) => {
       const { listId, cardId } = action.payload;
       const newState = Object.assign({}, state);
       newState[listId].cardIds.push(cardId);
+      axios({
+        method: 'post',
+        url: '/list/attach',
+        data: newState
+      });
       return newState;
     }
 
@@ -42,6 +59,11 @@ export default (state = defaultState, action) => {
       const newState = Object.assign({}, state);
       const index = newState[listId].cardIds.indexOf(cardId);
       newState[listId].cardIds.splice(index, 1);
+      axios({
+        method: 'post',
+        url: '/list/detach',
+        data: newState
+      });
       return newState;
     }
 
@@ -50,6 +72,11 @@ export default (state = defaultState, action) => {
       const newState = Object.assign({}, state);
       newState[listId].name = name;
       newState[listId].editing = editing;
+      axios({
+        method: 'post',
+        url: '/list/update',
+        data: newState
+      });
       return newState;
     }
 
@@ -64,6 +91,11 @@ export default (state = defaultState, action) => {
 
       const index = list.cardIds.findIndex(id => cardId === id);
       list.cardIds.splice(index, 1);
+      axios({
+        method: 'post',
+        url: '/list/deletecard',
+        data: newState
+      });
       return newState;
     }
 
