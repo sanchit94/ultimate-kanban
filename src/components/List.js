@@ -6,20 +6,20 @@ import { Icon } from "semantic-ui-react";
 
 import Card from "components/card/Card";
 import AddCardButton from "components/AddCardButton";
-import { createCard, updateCard, deleteCard } from "actions/cards";
-import { attachToList, detachFromList } from "actions/lists";
+import { createCardAsync, updateCardAsync, deleteCardAsync } from "actions/cards";
+import { attachToListAsync, detachFromListAsync } from "actions/lists";
 import * as ItemTypes from "constants/ItemTypes";
 
 const List = props => {
-  const { id, cardIds, onDelete, connectDropTarget } = props;
+  const { cardIds, onDelete, connectDropTarget, id } = props;
 
   const handleCreateCard = content => {
-    const card = props.createCard(content);
-    props.attachToList(props.id, card.payload.id);
+    const card = props.createCardAsync(content);
+    props.attachToListAsync(props.id, card.payload.id);
   };
 
   const handleDeleteCard = cardId => {
-    props.deleteCard(props.id, cardId);
+    props.deleteCardAsync(props.id, cardId);
   };
 
   const handleUpdateCard = (id, content, editing = false) => {
@@ -28,13 +28,13 @@ const List = props => {
       content,
       editing
     };
-    props.updateCard(card);
+    props.updateCardAsync(card);
   };
 
   const handleClick = id => {
     const card = props.cards.find(card => card.id === id);
     card.editing = true;
-    props.updateCard(card);
+    props.updateCardAsync(card);
   };
 
   const renderCards = () => {
@@ -88,8 +88,8 @@ const cardTarget = {
     const cardId = monitor.getItem().id;
     const listId = monitor.getItem().listId;
 
-    props.detachFromList(listId, cardId);
-    props.attachToList(props.id, cardId);
+    props.detachFromListAsync(listId, cardId);
+    props.attachToListAsync(props.id, cardId);
   }
 };
 
@@ -109,10 +109,10 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {
-    createCard,
-    updateCard,
-    deleteCard,
-    attachToList,
-    detachFromList
+    createCardAsync,
+    updateCardAsync,
+    deleteCardAsync,
+    attachToListAsync,
+    detachFromListAsync
   }
 )(DropTarget(ItemTypes.CARD, cardTarget, collect)(List));

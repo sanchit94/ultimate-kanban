@@ -7,18 +7,20 @@ import Axios from "axios";
 
 export const createListAsync = name => {
   return dispatch => {
-    Axios.post(`${domain}/list/add`, {
+    const data = {
       id: uuid(),
       name,
       editing: false,
       cardIds: []
-    })
+    };
+    Axios.post(`${domain}/list/add`, data)
     .then(res => {
-      dispatch(createList(res.data));
+      console.log(res.data);
     })
     .catch(err => {
       console.log(err);
     });
+    return dispatch(createList(data));
   }
 }
 
@@ -31,16 +33,18 @@ export const createList = data => {
 
 export const deleteListAsync = (boardId, listId) => {
   return dispatch => {
-    Axios.post(`${domain}/list/delete`, { 
+    const data = { 
       boardId,
       listId 
-    })
+    };
+    Axios.post(`${domain}/list/delete`, data)
     .then(res => {
-      dispatch(deleteList(res.data));
+      console.log(res.data);
     })
     .catch(err => {
       console.log(err);
     });
+    return dispatch(deleteList(data));
   }
 }
 
@@ -53,17 +57,19 @@ export const deleteList = data => {
 
 export const updateListAsync = (listId, name, editing = false) => {
   return dispatch => {
-    Axios.post(`${domain}/list/update`, {
+    const data = {
       listId,
       name,
       editing
-    })
+    };
+    Axios.post(`${domain}/list/update`, data)
     .then(res => {
-      dispatch(updateList(res.data));
+      console.log(res.data);
     })
     .catch(err => {
       console.log(err);
     });
+    return dispatch(updateList(data));
   }
 }
 
@@ -76,20 +82,23 @@ export const updateList = data => {
 
 export const attachToListAsync = (listId, cardId) => {
   return dispatch => {
-    Axios.post(`${domain}/list/attach`, {
+    const data = {
       cardId,
       listId
-    })
+    };
+    Axios.post(`${domain}/list/attach`, )
     .then(res => {
-      dispatch(attachToList(res.data));
+      console.log(res.data);
     })
     .catch(err => {
       console.log(err);
     });
+    return dispatch(attachToList(data));
   }
 }
 
 export const attachToList = data => {
+  console.log("Yoyo")
   return {
     type: actionTypes.ATTACH_TO_LIST,
     payload: data
@@ -98,16 +107,18 @@ export const attachToList = data => {
 
 export const detachFromListAsync = (listId, cardId) => {
   return dispatch => {
-    Axios.post(`${domain}/list/detach`, {
+    const data = {
       cardId,
       listId
-    })
+    };
+    Axios.post(`${domain}/list/detach`, data)
     .then(res => {
-      dispatch(detachFromList(res.data));
+      console.log(res.data);
     })
     .catch(err => {
       console.log(err);
     });
+    return dispatch(detachFromList(data));
   }
 }
 

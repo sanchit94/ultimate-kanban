@@ -4,8 +4,8 @@ import { Icon } from "semantic-ui-react";
 
 import Editor from "components/ui/Editor";
 import { openAddCardEditor, closeAddCardEditor } from "actions/ui";
-import { createCard } from "actions/cards";
-import { attachToList } from "actions/lists";
+import { createCardAsync } from "actions/cards";
+import { attachToListAsync } from "actions/lists";
 
 const AddCardButton = props => {
   const button = (
@@ -35,5 +35,5 @@ const AddCardButton = props => {
 
 export default connect(
   null,
-  { openAddCardEditor, closeAddCardEditor, createCard, attachToList }
+  { openAddCardEditor, closeAddCardEditor, createCardAsync, attachToListAsync }
 )(AddCardButton);

@@ -7,19 +7,20 @@ import Axios from "axios";
 
 export const createBoardAsync = content => {
   return dispatch => {
-    return Axios.post(`${domain}/board/create`, {
-        boardId: uuid(),
-        name: content,
-        listIds: [],
-        editing: false
-      })
+    const data = {
+      boardId: uuid(),
+      name: content,
+      listIds: [],
+      editing: false
+    };
+    Axios.post(`${domain}/board/create`, data)
       .then(res => {
-        dispatch(createBoard(res.data));
-        return res.data;
+        console.log(res.data);
       })
       .catch(err => {
-        dispatch(createBoardFailure(err.message));
+        console.log(err.message);
       });
+      return dispatch(createBoard(data));
   }
 }
 
@@ -30,27 +31,20 @@ export const createBoard = content => {
   };
 };
 
-const createBoardFailure = error => {
-  return {
-    type: actionTypes.CREATE_BOARD_FAILED,
-    payload: {
-      error
-    }
-  }
-}
-
 export const attachToBoardAsync = (boardId, listId) => {
   return dispatch => {
-    Axios.post(`${domain}/board/attach`, {
+    const data = {
       boardId,
       listId
-    })
+    };
+    Axios.post(`${domain}/board/attach`, data)
     .then(res => {
-      dispatch(attachToBoard(res.data));
+      console.log(res.data);
     })
     .catch(err => {
       console.error(err);
     });
+    return dispatch(attachToBoard(data));
   }
 }
 
@@ -63,17 +57,19 @@ export const attachToBoard = data => {
 
 export const updateBoardAsync = (boardId, name, editing = false) => {
   return dispatch => {
-    Axios.post(`${domain}/board/update`, {
+    const data = {
       boardId,
       name,
       editing
-    })
-    .then(res => {
-      dispatch(updateBoard(res.data));
+    };
+    Axios.post(`${domain}/board/update`, data)
+    .then(res => {      
+      console.log(res.data);
     })
     .catch(err => {
       console.error(err);
-    })
+    });
+    return dispatch(updateBoard(data));
   }
 }
 

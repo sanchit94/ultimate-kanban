@@ -3,14 +3,14 @@ import { connect } from "react-redux";
 import { Icon } from "semantic-ui-react";
 
 import { openAddListEditor, closeAddListEditor } from "actions/ui";
-import { createList } from "actions/lists";
-import { attachToBoard } from "actions/boards";
+import { createListAsync } from "actions/lists";
+import { attachToBoardAsync } from "actions/boards";
 import Editor from "components/ui/Editor";
 
 const AddListButton = props => {
   const handleCreateList = listName => {
-    const list = props.createList(listName);
-    props.attachToBoard(props.boardId, list.payload.id);
+    const list = props.createListAsync(listName);
+    props.attachToBoardAsync(props.boardId, list.payload.id);
   };
 
   const button = (
@@ -40,5 +40,5 @@ const AddListButton = props => {
 
 export default connect(
   null,
-  { openAddListEditor, closeAddListEditor, createList, attachToBoard }
+  { openAddListEditor, closeAddListEditor, createListAsync, attachToBoardAsync }
 )(AddListButton);

@@ -7,39 +7,45 @@ import Axios from "axios";
 
 export const createCardAsync = content => {
   return dispatch => {
-    Axios.post(`${domain}/card/create`, {
+    const data = {
       id: uuid(),
       editing: false,
       content,
       labels: []
-    })
+    }; 
+    Axios.post(`${domain}/card/create`, data)
     .then(res => {
-      dispatch(createCard(res.data));
+      console.log(res.data);
     })
     .catch(err => {
       console.error(err);
     });
+    return dispatch(createCard(data));
   }
 }
 
 export const createCard = content => {
   return {
     type: actionTypes.CREATE_CARD,
-    payload: content
+    payload: {
+      ...content
+    }
   };
 };
 
 export const updateCardAsync = card => {
   return dispatch => {
-    Axios.post(`${domain}/card/update`, {
+    const data = {
       card
-    })
+    };
+    Axios.post(`${domain}/card/update`, data)
     .then(res => {
-      dispatch(updateCard(res.data));
+      console.log(res.data);
     })
     .catch(err => {
       console.error(err);
     });
+    return dispatch(updateCard(data));
   }
 }
 
@@ -52,16 +58,18 @@ export const updateCard = card => {
 
 export const deleteCardAsync = (listId, cardId) => {
   return dispatch => {
-    Axios.post(`${domain}/card/delete`, {
+    const data = {
       cardId,
       listId
-    })
+    };
+    Axios.post(`${domain}/card/delete`, data)
     .then(res => {
-      dispatch(deleteCard(res.data));
+      console.log(res.data);
     })
     .catch(err => {
       console.error(err);
     });
+    return dispatch(deleteCard(data));
   }
 }
 

@@ -6,22 +6,22 @@ import PropTypes from "prop-types";
 import List from "components/List";
 import Editable from "components/ui/Editable";
 import AddListButton from "components/AddListButton";
-import { updateList, createList, deleteList } from "actions/lists";
-import { updateBoard } from "actions/boards";
-import { deleteCard } from "actions/cards";
+import { updateListAsync, createListAsync, deleteListAsync } from "actions/lists";
+import { updateBoardAsync } from "actions/boards";
+import { deleteCardAsync } from "actions/cards";
 
 class Board extends React.Component {
   boardId = this.props.match.params.id;
 
   handleNameClick = () => {
     const name = this.props.boards[this.boardId].name;
-    this.props.updateBoard(this.boardId, name, true);
+    this.props.updateBoardAsync(this.boardId, name, true);
   };
 
   handleDeleteList = listId => {
     const list = this.props.lists[listId];
-    list.cardIds.forEach(cardId => this.props.deleteCard(listId, cardId));
-    this.props.deleteList(this.boardId, listId);
+    list.cardIds.forEach(cardId => this.props.deleteCardAsync(listId, cardId));
+    this.props.deleteListAsync(this.boardId, listId);
   };
 
   renderLists = () => {
@@ -38,8 +38,8 @@ class Board extends React.Component {
             id={list.id}
             content={list.name}
             editing={list.editing}
-            onClick={() => this.props.updateList(list.id, list.name, true)}
-            onEdit={this.props.updateList}
+            onClick={() => this.props.updateListAsync(list.id, list.name, true)}
+            onEdit={this.props.updateListAsync}
           />
         </List>
       );
@@ -61,7 +61,7 @@ class Board extends React.Component {
             id={this.boardId}
             onClick={this.handleNameClick}
             editing={editing}
-            onEdit={this.props.updateBoard}
+            onEdit={this.props.updateBoardAsync}
             content={name}
           />
         </div>
@@ -90,5 +90,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { updateList, createList, deleteList, deleteCard, updateBoard }
+  { updateListAsync, createListAsync, deleteListAsync, deleteCardAsync, updateBoardAsync }
 )(Board);
