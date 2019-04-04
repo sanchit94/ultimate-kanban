@@ -86,7 +86,7 @@ export const attachToListAsync = (listId, cardId) => {
       cardId,
       listId
     };
-    Axios.post(`${domain}/list/attach`, )
+    Axios.post(`${domain}/list/attach`, data)
     .then(res => {
       console.log(res.data);
     })

@@ -15,6 +15,8 @@ const List = props => {
 
   const handleCreateCard = content => {
     const card = props.createCardAsync(content);
+    console.log(card);
+    console.log("id", props.id);
     props.attachToListAsync(props.id, card.payload.id);
   };
 
