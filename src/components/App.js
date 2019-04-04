@@ -9,13 +9,13 @@ import Content from "components/Content";
 import CreateBoardModal from "./CreateBoardModal";
 import Overlay from "./ui/Overlay";
 import { toggleCreateBoardModal } from "./../actions/ui";
-import { createBoard } from "./../actions/boards";
+import { createBoardAsync } from "./../actions/boards";
 
 class App extends React.Component {
-  handleCreateBoard = content => {
-    const { payload } = this.props.createBoard(content);
+  handleCreateBoard = async (content) => {
+    const {boardId} = await this.props.createBoardAsync(content);
     this.props.toggleCreateBoardModal(false);
-    this.props.history.push(`/${payload.boardId}`);
+    this.props.history.push(`/${boardId}`);
   };
 
   createBoardModal = (
@@ -49,7 +49,7 @@ export default withRouter(
   DragDropContext(HTML5Backend)(
     connect(
       mapStateToProps,
-      { toggleCreateBoardModal, createBoard }
+      { toggleCreateBoardModal, createBoardAsync }
     )(App)
   )
 );

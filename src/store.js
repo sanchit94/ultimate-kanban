@@ -1,12 +1,13 @@
 import throttle from "lodash/throttle";
-import { createStore } from "redux";
+import { createStore, applyMiddleware, compose } from "redux";
+import thunk from 'redux-thunk';
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import reducers from "reducers";
 import { loadState, saveState } from "./localStorage";
 
 const persistedState = loadState();
-const store = createStore(reducers, persistedState, composeWithDevTools());
+const store = createStore(reducers, persistedState, compose(applyMiddleware(thunk), composeWithDevTools()));
 
 store.subscribe(
   throttle(() => {

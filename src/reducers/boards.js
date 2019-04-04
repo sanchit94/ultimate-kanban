@@ -1,5 +1,5 @@
 import * as actionTypes from "actions/types";
-import { id0, id1, id2 } from "./lists";
+import { id0, id1, id2 } from './lists';
 
 const defaultState = {
   boards: {
