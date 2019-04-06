@@ -20,11 +20,12 @@ export const createListAsync = name => {
     .catch(err => {
       console.log(err);
     });
-    return dispatch(createList(data));
+    dispatch(createList(data))
+    return createList(data)
   }
 }
 
-export const createList = data => {
+const createList = data => {
   return {
     type: actionTypes.CREATE_LIST,
     payload: data
@@ -81,7 +82,7 @@ export const updateList = data => {
 };
 
 export const attachToListAsync = (listId, cardId) => {
-  return dispatch => {
+  return (dispatch) => {
     const data = {
       cardId,
       listId

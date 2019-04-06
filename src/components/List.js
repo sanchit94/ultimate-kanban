@@ -42,6 +42,7 @@ const List = props => {
   const renderCards = () => {
     return cardIds.map(cardId => {
       const cardProps = props.cards.find(card => card.id === cardId);
+      console.log(cardProps);
       return (
         <Card
           key={cardId}

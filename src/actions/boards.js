@@ -44,7 +44,8 @@ export const attachToBoardAsync = (boardId, listId) => {
     .catch(err => {
       console.error(err);
     });
-    return dispatch(attachToBoard(data));
+    dispatch(attachToBoard(data));
+    return attachToBoard(data);
   }
 }
 

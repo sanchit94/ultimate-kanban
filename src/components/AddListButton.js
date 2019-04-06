@@ -10,6 +10,7 @@ import Editor from "components/ui/Editor";
 const AddListButton = props => {
   const handleCreateList = listName => {
     const list = props.createListAsync(listName);
+    console.log(list)
     props.attachToBoardAsync(props.boardId, list.payload.id);
   };
 

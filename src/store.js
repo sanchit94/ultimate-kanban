@@ -4,15 +4,14 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import reducers from "reducers";
-import { loadState, saveState } from "./localStorage";
-const persistedState = loadState();
-console.log(persistedState)
-const store = createStore(reducers, persistedState, compose(applyMiddleware(thunk), composeWithDevTools()));
+import { saveState, loadStore } from "./localStorage";
+import * as asyncInitialState from 'redux-async-initial-state';
+
+const store = createStore(reducers, compose(applyMiddleware(thunk, asyncInitialState.middleware(loadStore)), composeWithDevTools()));
 
 store.subscribe(
   throttle(() => {
     const { boards, lists, cards } = store.getState();
-    console.log(store.getState());
     saveState({
       boards,
       lists,

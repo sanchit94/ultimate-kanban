@@ -20,7 +20,8 @@ export const createCardAsync = content => {
     .catch(err => {
       console.error(err);
     });
-    return dispatch(createCard(data));
+    dispatch(createCard(data));
+    return createCard(data);
   }
 }
 
