@@ -13,15 +13,16 @@ export const createCardAsync = content => {
       content,
       labels: []
     }; 
-    Axios.post(`${domain}/card/create`, data)
+    return Axios.post(`${domain}/card/create`, data)
     .then(res => {
-      console.log(res.data);
+      if (res.status == 200) {
+        dispatch(createCard(data));
+        return createCard(data);
+      }
     })
     .catch(err => {
       console.error(err);
     });
-    dispatch(createCard(data));
-    return createCard(data);
   }
 }
 
@@ -37,16 +38,19 @@ export const createCard = content => {
 export const updateCardAsync = card => {
   return dispatch => {
     const data = {
-      card
+      ...card
     };
-    Axios.post(`${domain}/card/update`, data)
+    return Axios.post(`${domain}/card/update`, data)
     .then(res => {
-      console.log(res.data);
+      if (res.status == 200){
+        dispatch(updateCard(data));
+        return updateCard(data);
+      }
     })
     .catch(err => {
       console.error(err);
     });
-    return dispatch(updateCard(data));
+    
   }
 }
 
@@ -63,14 +67,17 @@ export const deleteCardAsync = (listId, cardId) => {
       cardId,
       listId
     };
-    Axios.post(`${domain}/card/delete`, data)
+    return Axios.post(`${domain}/card/delete`, data)
     .then(res => {
-      console.log(res.data);
+      if (res.status == 200) {
+        dispatch(deleteCard(data));
+        return deleteCard(data)
+      }
     })
     .catch(err => {
       console.error(err);
     });
-    return dispatch(deleteCard(data));
+    
   }
 }
 
@@ -80,3 +87,14 @@ export const deleteCard = (data) => {
     payload: data
   };
 };
+
+export const deleteAllListCards = cardIds => {
+  return dispatch => {
+    return Axios.post(`${domain}/card/del-all-cards`, cardIds)
+      .then(res => {
+        if (res.data == 200) {
+          dispatch({ type: actionTypes.DELETE_FROM_LIST, payload: cardIds });
+        }
+      })
+  }
+}

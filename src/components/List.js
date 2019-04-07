@@ -13,8 +13,8 @@ import * as ItemTypes from "constants/ItemTypes";
 const List = props => {
   const { cardIds, onDelete, connectDropTarget, id } = props;
 
-  const handleCreateCard = content => {
-    const card = props.createCardAsync(content);
+  const handleCreateCard = async content => {
+    const card = await props.createCardAsync(content);
     console.log(card);
     console.log("id", props.id);
     props.attachToListAsync(props.id, card.payload.id);
@@ -30,6 +30,7 @@ const List = props => {
       content,
       editing
     };
+    console.log("card", card);
     props.updateCardAsync(card);
   };
 

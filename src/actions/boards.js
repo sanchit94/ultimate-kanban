@@ -13,14 +13,16 @@ export const createBoardAsync = content => {
       listIds: [],
       editing: false
     };
-    Axios.post(`${domain}/board/create`, data)
+    return Axios.post(`${domain}/board/create`, data)
       .then(res => {
-        console.log(res.data);
+        if (res.status == 200) {
+          dispatch(createBoard(data));
+          return createBoard(data);
+        }
       })
       .catch(err => {
         console.log(err.message);
-      });
-      return dispatch(createBoard(data));
+      });   
   }
 }
 
@@ -37,15 +39,16 @@ export const attachToBoardAsync = (boardId, listId) => {
       boardId,
       listId
     };
-    Axios.post(`${domain}/board/attach`, data)
+    return Axios.post(`${domain}/board/attach`, data)
     .then(res => {
-      console.log(res.data);
+      if (res.status == 200) {
+        dispatch(attachToBoard(data));
+        return attachToBoard(data);
+      }
     })
     .catch(err => {
       console.error(err);
     });
-    dispatch(attachToBoard(data));
-    return attachToBoard(data);
   }
 }
 
@@ -63,14 +66,17 @@ export const updateBoardAsync = (boardId, name, editing = false) => {
       name,
       editing
     };
-    Axios.post(`${domain}/board/update`, data)
+    return Axios.post(`${domain}/board/update`, data)
     .then(res => {      
-      console.log(res.data);
+      if (res.status == 200) {
+        dispatch(updateBoard(data));
+        return updateBoard(data);
+      }
     })
     .catch(err => {
       console.error(err);
     });
-    return dispatch(updateBoard(data));
+    
   }
 }
 

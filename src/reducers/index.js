@@ -11,5 +11,5 @@ export default asyncInitialState.outerReducer(combineReducers({
   boards: boardReducer,
   lists: listsReducer,
   cards: cardsReducer,
-  ui: uiReducer
+  ui: uiReducer,
 }));
