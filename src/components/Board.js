@@ -8,7 +8,7 @@ import Editable from "components/ui/Editable";
 import AddListButton from "components/AddListButton";
 import { updateListAsync, createListAsync, deleteListAsync } from "actions/lists";
 import { updateBoardAsync } from "actions/boards";
-import { deleteCardAsync } from "actions/cards";
+import { deleteCardAsync, deleteAllListCards } from "actions/cards";
 
 class Board extends React.Component {
   boardId = this.props.match.params.id;
@@ -20,7 +20,9 @@ class Board extends React.Component {
 
   handleDeleteList = listId => {
     const list = this.props.lists[listId];
-    list.cardIds.forEach(cardId => this.props.deleteCardAsync(listId, cardId));
+    let cardsIdsDelete = [];
+    list.cardIds.forEach(cardId => cardsIdsDelete.push(cardId));
+    this.props.deleteAllListCards(cardsIdsDelete);
     this.props.deleteListAsync(this.boardId, listId);
   };
 
@@ -90,5 +92,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { updateListAsync, createListAsync, deleteListAsync, deleteCardAsync, updateBoardAsync }
+  { updateListAsync, createListAsync, deleteListAsync, deleteCardAsync, updateBoardAsync, deleteAllListCards }
 )(Board);

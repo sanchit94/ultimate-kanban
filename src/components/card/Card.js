@@ -1,6 +1,7 @@
 import React from "react";
 import { DragSource } from "react-dnd";
-import { Icon } from "semantic-ui-react";
+import { connect } from 'react-redux';
+import { Icon, Modal, Form, Button } from "semantic-ui-react";
 
 import * as ItemTypes from "constants/ItemTypes";
 import CardEditor from "./CardEditor";
@@ -28,28 +29,74 @@ const collect = (connect, monitor) => {
 class Card extends React.Component {
   cardRef = React.createRef();
 
-  getLocation = () => {
-    console.log(this.cardRef);
-    const { x, y } = this.cardRef.current.getClientRects()[0];
-    return { x, y };
-  };
+  // getLocation = () => {
+  //   const { x, y } = this.cardRef.current.getClientRects()[0];
+  //   return { x, y };
+  // };
+
+  constructor(props) {
+    super(props);
+    const index = this.props.cards.findIndex(
+      card => card.id === this.props.id
+    );
+
+    this.state = {
+      heading: this.props.cards[index].heading,
+      content: this.props.cards[index].content,
+      imageUrl: "",
+      showModal: false
+    };
+  }
+
+  handleChange = e => {
+    this.setState({
+      [e.target.name] : e.target.value
+    })
+  }
+
+  handleSubmit = e => {
+    e && e.preventDefault();
+    const content = this.state;
+    this.props.onUpdate(this.props.id, content);
+    this.setState({
+      showModal: false
+    })
+  }
+
+  hideModal = () => {
+    const content = this.state;
+    this.props.onUpdate(this.props.id, content, false);
+  }
 
   renderEditor = () => {
-    const { id, content, onUpdate } = this.props;
-    const location = this.getLocation();
+    // const location = this.getLocation();
     return (
-      <Overlay onDismiss={() => onUpdate(id, content, false)}>
-        <CardEditor
-          location={location}
-          value={content}
-          onUpdate={content => onUpdate(id, content)}
-        />
+      <Overlay onDismiss={() => null}>
+         <Modal size="tiny" open={this.props.editing}>
+    <Modal.Header>Edit Card Details</Modal.Header>
+    <Modal.Content>
+      <Form onSubmit={this.handleSubmit}>
+      <Form.Field>
+        <label>Heading</label>
+        <input placeholder='First Name' name='heading' value={this.state.heading} onChange={this.handleChange} />
+      </Form.Field>
+      <Form.Field>
+        <label>Description</label>
+        <textarea placeholder='Last Name' name='content' value={this.state.content} onChange={this.handleChange} />
+      </Form.Field>
+      <Form.Field>
+      </Form.Field>
+      <Button type='submit'>Submit</Button>
+      <Button onClick={this.hideModal}>Cancel</Button>
+    </Form>
+    </Modal.Content>
+  </Modal>
       </Overlay>
     );
   };
 
   renderCard = () => {
-    const { connectDragSource, id, onDelete, editing, content } = this.props;
+    const { connectDragSource, id, onDelete, editing, content, heading } = this.props;
     return connectDragSource(
       // react-dnd doesn't like refs in outter div
       <div>
@@ -61,6 +108,7 @@ class Card extends React.Component {
           <div className="card__labels">
             {/* <Label circular empty color="red" /> */}
           </div>
+          <div className="card__header">{heading || "No Heading"}</div>
           <div className="card__content">
             <p>{content}</p>
           </div>
@@ -79,4 +127,8 @@ class Card extends React.Component {
   }
 }
 
-export default DragSource(ItemTypes.CARD, cardSource, collect)(Card);
+const mapStateToProps = state => ({
+  cards: state.cards
+})
+
+export default connect(mapStateToProps, null)(DragSource(ItemTypes.CARD, cardSource, collect)(Card));

@@ -13,18 +13,21 @@ export const createListAsync = name => {
       editing: false,
       cardIds: []
     };
-    Axios.post(`${domain}/list/add`, data)
+    return Axios.post(`${domain}/list/add`, data)
     .then(res => {
-      console.log(res.data);
+      if (res.status == 200) {
+        dispatch(createList(data))
+        return createList(data)
+      }
     })
     .catch(err => {
       console.log(err);
     });
-    return dispatch(createList(data));
+    
   }
 }
 
-export const createList = data => {
+const createList = data => {
   return {
     type: actionTypes.CREATE_LIST,
     payload: data
@@ -37,14 +40,17 @@ export const deleteListAsync = (boardId, listId) => {
       boardId,
       listId 
     };
-    Axios.post(`${domain}/list/delete`, data)
+    return Axios.post(`${domain}/list/delete`, data)
     .then(res => {
-      console.log(res.data);
+      if (res.status == 200) {
+        dispatch(deleteList(data));
+        return deleteList(data);
+      }
     })
     .catch(err => {
       console.log(err);
     });
-    return dispatch(deleteList(data));
+    
   }
 }
 
@@ -62,14 +68,17 @@ export const updateListAsync = (listId, name, editing = false) => {
       name,
       editing
     };
-    Axios.post(`${domain}/list/update`, data)
+    return Axios.post(`${domain}/list/update`, data)
     .then(res => {
-      console.log(res.data);
+      if (res.status == 200) {
+        dispatch(updateList(data));
+        return updateList(data);
+      }
     })
     .catch(err => {
       console.log(err);
     });
-    return dispatch(updateList(data));
+    
   }
 }
 
@@ -81,20 +90,22 @@ export const updateList = data => {
 };
 
 export const attachToListAsync = (listId, cardId) => {
-  return dispatch => {
+  return (dispatch) => {
     const data = {
       cardId,
       listId
     };
-    Axios.post(`${domain}/list/attach`, data)
+    return Axios.post(`${domain}/list/attach`, data)
     .then(res => {
-      console.log(res.data);
+      if (res.status == 200) {
+        dispatch(attachToList(data));
+        return attachToList(data);
+      }
     })
     .catch(err => {
       console.log(err);
     });
-    return dispatch(attachToList(data));
-  }
+  } 
 }
 
 export const attachToList = data => {
@@ -111,14 +122,17 @@ export const detachFromListAsync = (listId, cardId) => {
       cardId,
       listId
     };
-    Axios.post(`${domain}/list/detach`, data)
+    return Axios.post(`${domain}/list/detach`, data)
     .then(res => {
-      console.log(res.data);
+      if (res.status == 200) {
+        dispatch(detachFromList(data));
+        return detachFromList(data);
+      }
     })
     .catch(err => {
       console.log(err);
     });
-    return dispatch(detachFromList(data));
+    
   }
 }
 

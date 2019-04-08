@@ -10,8 +10,12 @@ import CreateBoardModal from "./CreateBoardModal";
 import Overlay from "./ui/Overlay";
 import { toggleCreateBoardModal } from "./../actions/ui";
 import { createBoardAsync } from "./../actions/boards";
+import { loadInitialState } from "./../actions/initial"
 
 class App extends React.Component {
+  componentDidMount = () => {
+    this.props.loadInitialState();
+  }
   handleCreateBoard = async (content) => {
     const {boardId} = await this.props.createBoardAsync(content);
     this.props.toggleCreateBoardModal(false);
@@ -49,7 +53,7 @@ export default withRouter(
   DragDropContext(HTML5Backend)(
     connect(
       mapStateToProps,
-      { toggleCreateBoardModal, createBoardAsync }
+      { toggleCreateBoardModal, createBoardAsync, loadInitialState }
     )(App)
   )
 );

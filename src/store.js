@@ -4,10 +4,10 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import reducers from "reducers";
-import { loadState, saveState } from "./localStorage";
+import { saveState, loadStore } from "./localStorage";
+import * as asyncInitialState from 'redux-async-initial-state';
 
-const persistedState = loadState();
-const store = createStore(reducers, persistedState, compose(applyMiddleware(thunk), composeWithDevTools()));
+const store = createStore(reducers, compose(applyMiddleware(thunk, asyncInitialState.middleware(loadStore)), composeWithDevTools()));
 
 store.subscribe(
   throttle(() => {

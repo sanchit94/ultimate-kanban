@@ -21,6 +21,17 @@ export default (state = [], action) => {
       return newState;
     }
 
+    case actionTypes.DELETE_FROM_LIST: {
+      const newState = state.slice(0);
+      action.payload.map(cardId => {
+        const index = newState.findIndex(
+          card => card.id === cardId
+        );
+        newState.splice(index, 1);
+      });
+      return newState;
+    }
+
     default:
       return state;
   }

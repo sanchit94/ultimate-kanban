@@ -11,6 +11,7 @@ export const UPDATE_LIST = "UPDATE_LIST";
 export const DELETE_LIST = "DELETE_LIST";
 export const ATTACH_TO_LIST = "ATTACH_TO_LIST";
 export const DETACH_FROM_LIST = "DETACH_FROM_LIST";
+export const DELETE_FROM_LIST = "DELETE_FROM_LIST";
 
 // Card actions
 export const CREATE_CARD = "CREATE_CARD";

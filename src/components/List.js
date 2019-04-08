@@ -13,8 +13,9 @@ import * as ItemTypes from "constants/ItemTypes";
 const List = props => {
   const { cardIds, onDelete, connectDropTarget, id } = props;
 
-  const handleCreateCard = content => {
-    const card = props.createCardAsync(content);
+  const handleCreateCard = async content => {
+    console.log(content)
+    const card = await props.createCardAsync(content);
     console.log(card);
     console.log("id", props.id);
     props.attachToListAsync(props.id, card.payload.id);
@@ -27,9 +28,10 @@ const List = props => {
   const handleUpdateCard = (id, content, editing = false) => {
     const card = {
       id,
-      content,
-      editing
+      editing,
+      ...content
     };
+    console.log("card", card);
     props.updateCardAsync(card);
   };
 
@@ -42,6 +44,7 @@ const List = props => {
   const renderCards = () => {
     return cardIds.map(cardId => {
       const cardProps = props.cards.find(card => card.id === cardId);
+      console.log(cardProps);
       return (
         <Card
           key={cardId}
