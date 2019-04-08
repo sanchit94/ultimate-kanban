@@ -14,6 +14,7 @@ const List = props => {
   const { cardIds, onDelete, connectDropTarget, id } = props;
 
   const handleCreateCard = async content => {
+    console.log(content)
     const card = await props.createCardAsync(content);
     console.log(card);
     console.log("id", props.id);

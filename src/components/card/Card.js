@@ -29,7 +29,6 @@ class Card extends React.Component {
   cardRef = React.createRef();
 
   getLocation = () => {
-    console.log(this.cardRef);
     const { x, y } = this.cardRef.current.getClientRects()[0];
     return { x, y };
   };
@@ -49,7 +48,7 @@ class Card extends React.Component {
   };
 
   renderCard = () => {
-    const { connectDragSource, id, onDelete, editing, content } = this.props;
+    const { connectDragSource, id, onDelete, editing, content, heading } = this.props;
     return connectDragSource(
       // react-dnd doesn't like refs in outter div
       <div>
@@ -61,6 +60,7 @@ class Card extends React.Component {
           <div className="card__labels">
             {/* <Label circular empty color="red" /> */}
           </div>
+          <div className="card__header">{heading || "No Heading"}</div>
           <div className="card__content">
             <p>{content}</p>
           </div>

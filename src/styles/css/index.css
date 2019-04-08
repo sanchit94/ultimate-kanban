@@ -436,8 +436,16 @@ a:hover {
   box-shadow: none;
   cursor: auto;
 }
+.card__header {
+  color: #02080a;
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  flex: 1;
+  overflow: hidden;
+}
 .card__content {
-  color: #000000;
+  color: #333232;
   padding-right: 36px;
   flex: 1;
   overflow: hidden;

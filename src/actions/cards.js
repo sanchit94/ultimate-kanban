@@ -10,7 +10,8 @@ export const createCardAsync = content => {
     const data = {
       id: uuid(),
       editing: false,
-      content,
+      content: content.content,
+      heading: content.heading,
       labels: []
     }; 
     return Axios.post(`${domain}/card/create`, data)
