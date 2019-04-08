@@ -28,8 +28,8 @@ const List = props => {
   const handleUpdateCard = (id, content, editing = false) => {
     const card = {
       id,
-      content,
-      editing
+      editing,
+      ...content
     };
     console.log("card", card);
     props.updateCardAsync(card);

@@ -37,6 +37,14 @@ class AddCardButton extends React.Component {
       showModal: true
     })
   }
+
+  hideModal = () => {
+    this.setState({
+      showModal: false
+    })
+  }
+
+  
   button = (
     <button
       className="list__content__button"
@@ -65,6 +73,7 @@ class AddCardButton extends React.Component {
       <Form.Field>
       </Form.Field>
       <Button type='submit'>Submit</Button>
+      <Button onClick={this.hideModal}>Cancel</Button>
     </Form>
     </Modal.Content>
   </Modal>
