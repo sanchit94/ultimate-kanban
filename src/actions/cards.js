@@ -97,5 +97,45 @@ export const deleteAllListCards = cardIds => {
           dispatch({ type: actionTypes.DELETE_FROM_LIST, payload: cardIds });
         }
       })
+      .catch(err => {
+        console.log(err);
+      })
   }
+}
+
+export const uploadFileAsync = (file, cardId) => {
+  const data = {
+    file,
+    cardId
+  };
+  let formData = new FormData();
+  formData.append('cardImage', file, file.name);
+  formData.append('cardId', cardId);
+  console.log(formData);
+  return dispatch => {
+    return Axios({
+      method: "post",
+      // headers: {
+      //   'Content-Type': 'multipart/form-data'
+      // },
+      url: `${domain}/card/upload`,
+      data: formData
+    })
+    .then(res => {
+      if (res.status == 200) {
+        console.log(res, "$$$$");
+        dispatch({ type: actionTypes.IMAGE_UPLOAD, payload: data });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  }
+};
+
+export const loadCardImage = cardId => {
+  // return dispatch => {
+  //   return Axios.get(`${domain}/card/img/${cardId}`)
+  //     .then(res => console.log(res.blob()));
+  // }
 }

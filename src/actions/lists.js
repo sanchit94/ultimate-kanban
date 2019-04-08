@@ -109,7 +109,6 @@ export const attachToListAsync = (listId, cardId) => {
 }
 
 export const attachToList = data => {
-  console.log("Yoyo")
   return {
     type: actionTypes.ATTACH_TO_LIST,
     payload: data

@@ -17,6 +17,7 @@ export const DELETE_FROM_LIST = "DELETE_FROM_LIST";
 export const CREATE_CARD = "CREATE_CARD";
 export const UPDATE_CARD = "UPDATE_CARD";
 export const DELETE_CARD = "DELETE_CARD";
+export const IMAGE_UPLOAD = "IMAGE_UPLOAD";
 
 // UI actions
 export const UI_ADD_LIST_EDITOR = "UI_ADD_LIST_EDITOR";

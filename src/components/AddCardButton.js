@@ -13,8 +13,10 @@ class AddCardButton extends React.Component {
       heading: "",
       content: "",
       imageUrl: "",
+      file: null,
       showModal: false
     };
+    
   }
 
   handleChange = e => {
@@ -44,6 +46,7 @@ class AddCardButton extends React.Component {
     })
   }
 
+ 
   
   button = (
     <button
@@ -64,17 +67,19 @@ class AddCardButton extends React.Component {
       <Form onSubmit={this.handleSubmit}>
       <Form.Field>
         <label>Heading</label>
-        <input placeholder='First Name' name='heading' value={this.state.heading} onChange={this.handleChange} />
+        <input name='heading' value={this.state.heading} onChange={this.handleChange} />
       </Form.Field>
       <Form.Field>
         <label>Description</label>
-        <textarea placeholder='Last Name' name='content' value={this.state.content} onChange={this.handleChange} />
+        <textarea name='content' value={this.state.content} onChange={this.handleChange} />
       </Form.Field>
       <Form.Field>
+      
       </Form.Field>
       <Button type='submit'>Submit</Button>
       <Button onClick={this.hideModal}>Cancel</Button>
     </Form>
+    
     </Modal.Content>
   </Modal>
     )

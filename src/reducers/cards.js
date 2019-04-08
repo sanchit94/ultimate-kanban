@@ -32,6 +32,14 @@ export default (state = [], action) => {
       return newState;
     }
 
+    case actionTypes.IMAGE_UPLOAD: {
+      const newState = state.slice(0);
+      const index = newState.findIndex(
+        card => card.id === action.payload.cardId
+      );
+      newState[index].cardImage = action.payload.file.name;
+    }
+
     default:
       return state;
   }

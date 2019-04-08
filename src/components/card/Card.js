@@ -1,10 +1,11 @@
 import React from "react";
 import { DragSource } from "react-dnd";
 import { connect } from 'react-redux';
-import { Icon, Modal, Form, Button } from "semantic-ui-react";
+import { Icon, Modal, Form, Button, Image } from "semantic-ui-react";
 
+import { domain } from '../../constants';
 import * as ItemTypes from "constants/ItemTypes";
-import CardEditor from "./CardEditor";
+import { uploadFileAsync, loadCardImage } from '../../actions/cards'
 import Overlay from "../ui/Overlay";
 
 const cardSource = {
@@ -43,9 +44,10 @@ class Card extends React.Component {
     this.state = {
       heading: this.props.cards[index].heading,
       content: this.props.cards[index].content,
-      imageUrl: "",
+      cardImage: this.props.cards[index].cardImage,
       showModal: false
     };
+    this.fileInputRef = React.createRef();
   }
 
   handleChange = e => {
@@ -63,34 +65,65 @@ class Card extends React.Component {
     })
   }
 
+  uploadFile = () => {
+    this.fileInputRef.current.click();
+    // this.showModal();
+
+  }
+  
+  fileChange = e => {
+    console.log(e.target.files, "$$");
+    console.log(e.target.files[0], "^^");
+    const file = e.target.files[0];
+    this.props.uploadFileAsync(file, this.props.id);
+  }
+
   hideModal = () => {
     const content = this.state;
     this.props.onUpdate(this.props.id, content, false);
   }
+
+  cardImage = () => {
+    return (
+    <Image src={`${domain}/uploads/${this.state.cardImage}`} fluid alt="Cannot load" />
+  )}
 
   renderEditor = () => {
     // const location = this.getLocation();
     return (
       <Overlay onDismiss={() => null}>
          <Modal size="tiny" open={this.props.editing}>
-    <Modal.Header>Edit Card Details</Modal.Header>
-    <Modal.Content>
-      <Form onSubmit={this.handleSubmit}>
-      <Form.Field>
-        <label>Heading</label>
-        <input placeholder='First Name' name='heading' value={this.state.heading} onChange={this.handleChange} />
-      </Form.Field>
-      <Form.Field>
-        <label>Description</label>
-        <textarea placeholder='Last Name' name='content' value={this.state.content} onChange={this.handleChange} />
-      </Form.Field>
-      <Form.Field>
-      </Form.Field>
-      <Button type='submit'>Submit</Button>
-      <Button onClick={this.hideModal}>Cancel</Button>
-    </Form>
-    </Modal.Content>
-  </Modal>
+          <Modal.Header>Edit Card Details</Modal.Header>
+          <Modal.Content>
+            <Form onSubmit={this.handleSubmit}>
+            <Form.Field>
+              <label>Heading</label>
+              <input name='heading' value={this.state.heading} onChange={this.handleChange} />
+            </Form.Field>
+            <Form.Field>
+              <label>Description</label>
+              <textarea name='content' value={this.state.content} onChange={this.handleChange} />
+            </Form.Field>
+            <Form.Field>
+            </Form.Field>
+            <Button type='submit'>Submit</Button>
+            <Button onClick={this.hideModal}>Cancel</Button>
+          </Form>
+          <div className="mt-2"></div>
+          <Button
+            content="Choose Image"
+            labelPosition="left"
+            icon="file"
+            onClick={this.uploadFile}
+          />
+          <input
+            ref={this.fileInputRef}
+            type="file"
+            hidden
+            onChange={this.fileChange}
+          />
+          </Modal.Content>
+        </Modal>
       </Overlay>
     );
   };
@@ -105,6 +138,7 @@ class Card extends React.Component {
           className="card"
           onClick={() => this.props.onClick(id)}
         >
+          {this.state.cardImage && this.cardImage()}
           <div className="card__labels">
             {/* <Label circular empty color="red" /> */}
           </div>
@@ -131,4 +165,8 @@ const mapStateToProps = state => ({
   cards: state.cards
 })
 
-export default connect(mapStateToProps, null)(DragSource(ItemTypes.CARD, cardSource, collect)(Card));
+export default connect(mapStateToProps,
+   {
+     uploadFileAsync,
+     loadCardImage
+    })(DragSource(ItemTypes.CARD, cardSource, collect)(Card));
