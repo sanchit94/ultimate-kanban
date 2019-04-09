@@ -111,7 +111,6 @@ export const uploadFileAsync = (file, cardId) => {
   let formData = new FormData();
   formData.append('cardImage', file, file.name);
   formData.append('cardId', cardId);
-  console.log(formData);
   return dispatch => {
     return Axios({
       method: "post",
@@ -123,7 +122,6 @@ export const uploadFileAsync = (file, cardId) => {
     })
     .then(res => {
       if (res.status == 200) {
-        console.log(res, "$$$$");
         dispatch({ type: actionTypes.IMAGE_UPLOAD, payload: data });
       }
     })

@@ -72,8 +72,6 @@ class Card extends React.Component {
   }
   
   fileChange = e => {
-    console.log(e.target.files, "$$");
-    console.log(e.target.files[0], "^^");
     const file = e.target.files[0];
     this.props.uploadFileAsync(file, this.props.id);
   }

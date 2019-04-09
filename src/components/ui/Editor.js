@@ -67,7 +67,6 @@ class Editor extends React.Component {
   };
 
   handleSubmit = e => {
-    console.log("event is happening")
     e && e.preventDefault();
     const content = this.state.content.trim();
     if (!content || this.state.error.exceedMaxCount) return;
@@ -140,11 +139,7 @@ class Editor extends React.Component {
 
   renderChildren = () => {
     const { children } = this.props;
-    console.log("props", this.props)
-    // console.log(React.Children);
-    console.log(children)
     return React.Children.map(children, child => {
-      console.log(child)
       const name = child.type.displayName;
       switch (name) {
         case "input":
