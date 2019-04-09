@@ -121,19 +121,14 @@ export const uploadFileAsync = (file, cardId) => {
       data: formData
     })
     .then(res => {
-      if (res.status == 200) {
+      console.log(res);
+      if (res.status === 200) {
         dispatch({ type: actionTypes.IMAGE_UPLOAD, payload: data });
+        return true;
       }
     })
     .catch(err => {
-      console.log(err);
+      alert("Error occured. Maybe the file size is too large.");
     });
   }
 };
-
-export const loadCardImage = cardId => {
-  // return dispatch => {
-  //   return Axios.get(`${domain}/card/img/${cardId}`)
-  //     .then(res => console.log(res.blob()));
-  // }
-}

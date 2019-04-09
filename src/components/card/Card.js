@@ -5,7 +5,7 @@ import { Icon, Modal, Form, Button, Image } from "semantic-ui-react";
 
 import { domain } from '../../constants';
 import * as ItemTypes from "constants/ItemTypes";
-import { uploadFileAsync, loadCardImage } from '../../actions/cards'
+import { uploadFileAsync } from '../../actions/cards'
 import Overlay from "../ui/Overlay";
 
 const cardSource = {
@@ -29,11 +29,6 @@ const collect = (connect, monitor) => {
 
 class Card extends React.Component {
   cardRef = React.createRef();
-
-  // getLocation = () => {
-  //   const { x, y } = this.cardRef.current.getClientRects()[0];
-  //   return { x, y };
-  // };
 
   constructor(props) {
     super(props);
@@ -71,9 +66,16 @@ class Card extends React.Component {
 
   }
   
-  fileChange = e => {
+  fileChange = async e => {
     const file = e.target.files[0];
-    this.props.uploadFileAsync(file, this.props.id);
+    const isUploaded = await this.props.uploadFileAsync(file, this.props.id);
+    this.setState({
+      cardImage: file.name
+    });
+
+    if (isUploaded) {
+      this.hideModal();
+    }
   }
 
   hideModal = () => {
@@ -166,6 +168,5 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps,
    {
-     uploadFileAsync,
-     loadCardImage
+     uploadFileAsync
     })(DragSource(ItemTypes.CARD, cardSource, collect)(Card));

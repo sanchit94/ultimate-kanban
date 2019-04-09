@@ -38,6 +38,7 @@ export default (state = [], action) => {
         card => card.id === action.payload.cardId
       );
       newState[index].cardImage = action.payload.file.name;
+      console.log(newState);
       return newState;
     }
 
