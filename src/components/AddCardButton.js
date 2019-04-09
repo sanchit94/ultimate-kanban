@@ -28,6 +28,9 @@ class AddCardButton extends React.Component {
   handleSubmit = e => {
     e && e.preventDefault();
     const content = this.state;
+    if (!content.heading && !content.content) {
+      return this.hideModal();
+    }
     this.props.onCreateCard(content);
     this.setState({
       showModal: false

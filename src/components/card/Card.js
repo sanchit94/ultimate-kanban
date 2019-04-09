@@ -143,7 +143,7 @@ class Card extends React.Component {
           <div className="card__labels">
             {/* <Label circular empty color="red" /> */}
           </div>
-          <div className="card__header">{heading || "No Heading"}</div>
+          <div className="card__header">{heading}</div>
           <div className="card__content">
             <p>{content}</p>
           </div>
