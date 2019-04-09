@@ -137,6 +137,7 @@ class Card extends React.Component {
           onClick={() => this.props.onClick(id)}
         >
           {this.state.cardImage && this.cardImage()}
+          <div className="mt-2"></div>
           <div className="card__labels">
             {/* <Label circular empty color="red" /> */}
           </div>
