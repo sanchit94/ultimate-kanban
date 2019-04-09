@@ -1,6 +1,6 @@
 {
   "name": "ultimate-kanban",
-  "homepage": "http://patrickmao93.github.io/ultimate-kanban",
+  "homepage": ".",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
