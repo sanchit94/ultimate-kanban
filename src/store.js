@@ -7,17 +7,17 @@ import reducers from "reducers";
 import { saveState, loadStore } from "./localStorage";
 import * as asyncInitialState from 'redux-async-initial-state';
 
-const store = createStore(reducers, compose(applyMiddleware(thunk, asyncInitialState.middleware(loadStore)), composeWithDevTools()));
+const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunk, asyncInitialState.middleware(loadStore))));
 
-store.subscribe(
-  throttle(() => {
-    const { boards, lists, cards } = store.getState();
-    saveState({
-      boards,
-      lists,
-      cards
-    });
-  }, 1000)
-);
+// store.subscribe(
+//   throttle(() => {
+//     const { boards, lists, cards } = store.getState();
+//     saveState({
+//       boards,
+//       lists,
+//       cards
+//     });
+//   }, 1000)
+// );
 
 export default store;
