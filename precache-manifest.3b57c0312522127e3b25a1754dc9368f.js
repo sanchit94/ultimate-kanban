@@ -4,28 +4,28 @@ self.__precacheManifest = [
     "url": "/ultimate-kanban/static/media/icons.faff9214.woff"
   },
   {
-    "revision": "7d1294df933358dd6c55",
-    "url": "/ultimate-kanban/static/css/main.c894e17f.chunk.css"
+    "revision": "eea57a57e8d7096d7f96",
+    "url": "/ultimate-kanban/static/css/main.96b83c47.chunk.css"
+  },
+  {
+    "revision": "94d7f7e23c04e1811adf",
+    "url": "/ultimate-kanban/static/js/runtime~main.a1499e8a.js"
   },
   {
     "revision": "a1a749e89f578a49306ec2b055c073da",
     "url": "/ultimate-kanban/static/media/brand-icons.a1a749e8.svg"
   },
   {
-    "revision": "63d6f0da9da5489c5f3f",
-    "url": "/ultimate-kanban/static/js/1.63d6f0da.chunk.js"
-  },
-  {
-    "revision": "e02d5132c1580d8df8f3",
-    "url": "/ultimate-kanban/static/js/runtime~main.e02d5132.js"
-  },
-  {
-    "revision": "cd6c777f1945164224dee082abaea03a",
-    "url": "/ultimate-kanban/static/media/outline-icons.cd6c777f.woff2"
+    "revision": "5437d4b6ca57fec19c40",
+    "url": "/ultimate-kanban/static/js/2.664687ef.chunk.js"
   },
   {
     "revision": "ef60a4f6c25ef7f39f2d25a748dbecfe",
     "url": "/ultimate-kanban/static/media/outline-icons.ef60a4f6.woff"
+  },
+  {
+    "revision": "cd6c777f1945164224dee082abaea03a",
+    "url": "/ultimate-kanban/static/media/outline-icons.cd6c777f.woff2"
   },
   {
     "revision": "9c74e172f87984c48ddf5c8108cabe67",
@@ -44,8 +44,8 @@ self.__precacheManifest = [
     "url": "/ultimate-kanban/static/media/icons.0ab54153.woff2"
   },
   {
-    "revision": "7d1294df933358dd6c55",
-    "url": "/ultimate-kanban/static/js/main.7d1294df.chunk.js"
+    "revision": "eea57a57e8d7096d7f96",
+    "url": "/ultimate-kanban/static/js/main.420ecafa.chunk.js"
   },
   {
     "revision": "e8c322de9658cbeb8a774b6624167c2c",
@@ -56,12 +56,12 @@ self.__precacheManifest = [
     "url": "/ultimate-kanban/static/media/brand-icons.a046592b.woff"
   },
   {
-    "revision": "b87b9ba532ace76ae9f6edfe9f72ded2",
-    "url": "/ultimate-kanban/static/media/icons.b87b9ba5.ttf"
-  },
-  {
     "revision": "8e3c7f5520f5ae906c6cf6d7f3ddcd19",
     "url": "/ultimate-kanban/static/media/icons.8e3c7f55.eot"
+  },
+  {
+    "revision": "b87b9ba532ace76ae9f6edfe9f72ded2",
+    "url": "/ultimate-kanban/static/media/icons.b87b9ba5.ttf"
   },
   {
     "revision": "13db00b7a34fee4d819ab7f9838cc428",
@@ -80,11 +80,11 @@ self.__precacheManifest = [
     "url": "/ultimate-kanban/static/media/icons.962a1bf3.svg"
   },
   {
-    "revision": "63d6f0da9da5489c5f3f",
-    "url": "/ultimate-kanban/static/css/1.6ebcd6e5.chunk.css"
+    "revision": "5437d4b6ca57fec19c40",
+    "url": "/ultimate-kanban/static/css/2.4b248781.chunk.css"
   },
   {
-    "revision": "d18fbdc5ded6806c319b2ae98000060b",
+    "revision": "c02dc125420fc08ad436f1d419516739",
     "url": "/ultimate-kanban/index.html"
   }
 ];
