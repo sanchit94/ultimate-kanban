@@ -4,3 +4,4 @@ export const ItemTypes = {
 };
 
 export const domain = "https://boiling-earth-76159.herokuapp.com";
+// export const domain = "http://localhost:3001";

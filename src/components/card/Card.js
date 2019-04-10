@@ -1,7 +1,7 @@
 import React from "react";
 import { DragSource } from "react-dnd";
 import { connect } from 'react-redux';
-import { Icon, Modal, Form, Button, Image, Confirm } from "semantic-ui-react";
+import { Icon, Modal, Form, Button, Image, Confirm, Dropdown } from "semantic-ui-react";
 
 import { domain } from '../../constants';
 import * as ItemTypes from "constants/ItemTypes";
@@ -27,6 +27,12 @@ const collect = (connect, monitor) => {
   };
 };
 
+const options = [
+  { key: 1, text: 'High', value: 1 },
+  { key: 2, text: 'Medium', value: 2 },
+  { key: 3, text: 'Low', value: 3 },
+];
+
 class Card extends React.Component {
   cardRef = React.createRef();
 
@@ -42,7 +48,8 @@ class Card extends React.Component {
       content: this.props.cards[index].content,
       cardImage: this.props.cards[index].cardImage,
       open: false,
-      showModal: false
+      showModal: false,
+      priority: this.props.cards[index].priority || 2
     };
     this.fileInputRef = React.createRef();
   }
@@ -99,6 +106,12 @@ class Card extends React.Component {
     this.props.onUpdate(this.props.id, content, false);
   }
 
+  handlePriorityChange = (e, { value }) => {
+    this.setState({
+      priority: value
+    })
+  }
+
   cardImage = () => {
     return (
     <Image src={`${domain}/uploads/${this.state.cardImage}`} fluid alt="Cannot load" />
@@ -121,6 +134,14 @@ class Card extends React.Component {
               <textarea name='content' value={this.state.content} onChange={this.handleChange} />
             </Form.Field>
             <Form.Field>
+            <label>Priority</label>
+            <Dropdown
+            onChange={this.handlePriorityChange}
+            options={options}
+            placeholder='Choose an option'
+            selection
+            value={this.state.priority}
+          />
             </Form.Field>
             <Button type='submit'>Submit</Button>
             <Button onClick={this.hideModal}>Cancel</Button>
@@ -156,8 +177,7 @@ class Card extends React.Component {
         >
           {this.state.cardImage && this.cardImage()}
           <div className="mt-2"></div>
-          <div className="card__labels">
-            {/* <Label circular empty color="red" /> */}
+          <div className={`card__labels__${this.state.priority}`}>
           </div>
           <div className="card__header">{heading}</div>
           <div className="card__content">

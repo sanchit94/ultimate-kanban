@@ -1,10 +1,16 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Icon, Modal, Form, Button } from "semantic-ui-react";
+import { Icon, Modal, Form, Button, Dropdown } from "semantic-ui-react";
 
 import { openAddCardEditor, closeAddCardEditor } from "actions/ui";
 import { createCardAsync } from "actions/cards";
 import { attachToListAsync } from "actions/lists";
+
+const options = [
+  { key: 1, text: 'High', value: 1 },
+  { key: 2, text: 'Medium', value: 2 },
+  { key: 3, text: 'Low', value: 3 },
+];
 
 class AddCardButton extends React.Component {
   constructor(props) {
@@ -12,7 +18,7 @@ class AddCardButton extends React.Component {
     this.state = {
       heading: "",
       content: "",
-      file: null,
+      priority: 2,
       showModal: false
     };
     
@@ -35,7 +41,8 @@ class AddCardButton extends React.Component {
       showModal: false,
       heading: "",
       content: "",
-      file: null
+      file: null,
+      priority: 2
     })
   }
 
@@ -79,7 +86,14 @@ class AddCardButton extends React.Component {
         <textarea name='content' value={this.state.content} onChange={this.handleChange} />
       </Form.Field>
       <Form.Field>
-      
+      <label>Priority</label>
+            <Dropdown
+            onChange={this.handlePriorityChange}
+            options={options}
+            placeholder='Choose an option'
+            selection
+            value={this.state.priority}
+          />
       </Form.Field>
       <Button type='submit'>Submit</Button>
       <Button onClick={this.hideModal}>Cancel</Button>

@@ -44,7 +44,7 @@ export const updateCardAsync = card => {
     };
     return Axios.post(`${domain}/card/update`, data)
     .then(res => {
-      if (res.status == 200){
+      if (res.status === 200){
         dispatch(updateCard(data));
         return updateCard(data);
       }
