@@ -479,6 +479,10 @@ a:hover {
   padding: 8px;
 }
 
+.ui.small.modal.visible > .content {
+  color: #02080a;
+}
+
 .mt-2 {
   margin-top: 1.5rem;
 }

@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
 import { DropTarget } from "react-dnd";
-import { Icon } from "semantic-ui-react";
+import { Icon, Confirm } from "semantic-ui-react";
 
 import Card from "components/card/Card";
 import AddCardButton from "components/AddCardButton";
@@ -10,76 +10,101 @@ import { createCardAsync, updateCardAsync, deleteCardAsync } from "actions/cards
 import { attachToListAsync, detachFromListAsync } from "actions/lists";
 import * as ItemTypes from "constants/ItemTypes";
 
-const List = props => {
-  const { cardIds, onDelete, connectDropTarget, id } = props;
+class List extends React.Component {
+  state = {
+    open: false
+  }
 
-  const handleCreateCard = async content => {
-    const card = await props.createCardAsync(content);
+  handleCreateCard = async content => {
+    const card = await this.props.createCardAsync(content);
     if (card) {
-      props.attachToListAsync(props.id, card.payload.id);
+      this.props.attachToListAsync(this.props.id, card.payload.id);
     }
     
   };
 
-  const handleDeleteCard = cardId => {
-    props.deleteCardAsync(props.id, cardId);
+  handleDeleteCard = cardId => {
+    this.props.deleteCardAsync(this.props.id, cardId);
   };
 
-  const handleUpdateCard = (id, content, editing = false) => {
+  handleUpdateCard = (id, content, editing = false) => {
     const card = {
       id,
       editing,
       ...content
     };
-    props.updateCardAsync(card);
+    this.props.updateCardAsync(card);
   };
 
-  const handleClick = id => {
-    const card = props.cards.find(card => card.id === id);
+  handleClick = id => {
+    const card = this.props.cards.find(card => card.id === id);
     card.editing = true;
-    props.updateCardAsync(card);
+    this.props.updateCardAsync(card);
   };
 
-  const renderCards = () => {
-    return cardIds.map(cardId => {
+  showConfirmModal = e => {
+    e.stopPropagation();
+    this.setState({
+      open: true
+    });
+  }
+
+  hideConfirmModal = e => {
+    e.stopPropagation();
+    this.setState({
+      open: false
+    });
+  }
+
+  renderCards = () => {
+    return this.props.cardIds.map(cardId => {
       console.log(cardId, "CardId")
-      const cardProps = props.cards.find(card => card.id === cardId);
+      const cardProps = this.props.cards.find(card => card.id === cardId);
       console.log("CardProps", cardProps);
       return (
         <Card
           key={cardId}
-          onDelete={handleDeleteCard}
-          onUpdate={handleUpdateCard}
-          onClick={handleClick}
-          listId={props.id}
+          onDelete={this.handleDeleteCard}
+          onUpdate={this.handleUpdateCard}
+          onClick={this.handleClick}
+          listId={this.props.id}
           {...cardProps}
         />
       );
     });
   };
+  render() {
+    const { connectDropTarget, onDelete, id } = this.props;
+    return (
+      connectDropTarget(
+      <div className="list">
+        <div
+          className={`list__dragging-over ${this.props.isOver &&
+            "list__dragging-over--active"}`}
+        />
+        <div className="list__header">
+          {this.props.children}
+          <div className="list__header__close" onClick={this.showConfirmModal}>
+            <Icon name="times" />
+          </div>
+          <Confirm open={this.state.open} header='Delete this entire list along with all cards?' onCancel={this.hideConfirmModal} onConfirm={() => onDelete(id)} />
+        </div>
+        <div className="list__content">
+          {this.renderCards()}
+          <AddCardButton
+            open={this.props.addCardEditor.open && id === this.props.addCardEditor.listId}
+            onCreateCard={this.handleCreateCard}
+            listId={id}
+          />
 
-  return connectDropTarget(
-    <div className="list">
-      <div
-        className={`list__dragging-over ${props.isOver &&
-          "list__dragging-over--active"}`}
-      />
-      <div className="list__header">
-        {props.children}
-        <div className="list__header__close" onClick={() => onDelete(id)}>
-          <Icon name="times" />
         </div>
       </div>
-      <div className="list__content">
-        {renderCards()}
-        <AddCardButton
-          open={props.addCardEditor.open && id === props.addCardEditor.listId}
-          onCreateCard={handleCreateCard}
-          listId={id}
-        />
-      </div>
-    </div>
-  );
+    )
+    );
+
+  }
+
+  
 };
 
 List.propTypes = {

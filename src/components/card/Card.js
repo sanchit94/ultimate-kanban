@@ -1,7 +1,7 @@
 import React from "react";
 import { DragSource } from "react-dnd";
 import { connect } from 'react-redux';
-import { Icon, Modal, Form, Button, Image } from "semantic-ui-react";
+import { Icon, Modal, Form, Button, Image, Confirm } from "semantic-ui-react";
 
 import { domain } from '../../constants';
 import * as ItemTypes from "constants/ItemTypes";
@@ -41,6 +41,7 @@ class Card extends React.Component {
       heading: this.props.cards[index].heading,
       content: this.props.cards[index].content,
       cardImage: this.props.cards[index].cardImage,
+      open: false,
       showModal: false
     };
     this.fileInputRef = React.createRef();
@@ -77,6 +78,20 @@ class Card extends React.Component {
     if (isUploaded) {
       alert("Image Uploaded");
     }
+  }
+
+  showConfirmModal = e => {
+    e.stopPropagation();
+    this.setState({
+      open: true
+    });
+  }
+
+  hideConfirmModal = e => {
+    e.stopPropagation();
+    this.setState({
+      open: false
+    });
   }
 
   hideModal = () => {
@@ -130,14 +145,14 @@ class Card extends React.Component {
   };
 
   renderCard = () => {
-    const { connectDragSource, id, onDelete, editing, content, heading } = this.props;
+    const { connectDragSource, id, onClick, onDelete, editing, content, heading } = this.props;
     return connectDragSource(
       // react-dnd doesn't like refs in outter div
       <div>
         <div
           ref={this.cardRef}
           className="card"
-          onClick={() => this.props.onClick(id)}
+          onClick={() => onClick(id)}
         >
           {this.state.cardImage && this.cardImage()}
           <div className="mt-2"></div>
@@ -148,9 +163,10 @@ class Card extends React.Component {
           <div className="card__content">
             <p>{content}</p>
           </div>
-          <div className="card__close" onClick={() => onDelete(id)}>
+          <div className="card__close" onClick={this.showConfirmModal}>
             <Icon name="times" />
           </div>
+          <Confirm open={this.state.open} header='Delete this card?' onCancel={this.hideConfirmModal} onConfirm={() => onDelete(id)} />
           {editing && this.renderEditor()}
         </div>
       </div>
