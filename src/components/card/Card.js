@@ -35,6 +35,7 @@ class Card extends React.Component {
     const index = this.props.cards.findIndex(
       card => card.id === this.props.id
     );
+    console.log(this.props.id);
 
     this.state = {
       heading: this.props.cards[index].heading,

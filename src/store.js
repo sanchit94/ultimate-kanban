@@ -1,10 +1,9 @@
-import throttle from "lodash/throttle";
-import { createStore, applyMiddleware, compose } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import reducers from "reducers";
-import { saveState, loadStore } from "./localStorage";
+import { loadStore } from "./localStorage";
 import * as asyncInitialState from 'redux-async-initial-state';
 
 const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunk, asyncInitialState.middleware(loadStore))));

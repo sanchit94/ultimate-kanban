@@ -30,6 +30,7 @@ class Board extends React.Component {
     const { boards, lists } = this.props;
     return boards[this.boardId].listIds.map(listId => {
       const list = lists[listId];
+      console.log(list);
       return (
         <List
           key={list.id}

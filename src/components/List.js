@@ -15,7 +15,10 @@ const List = props => {
 
   const handleCreateCard = async content => {
     const card = await props.createCardAsync(content);
-    props.attachToListAsync(props.id, card.payload.id);
+    if (card) {
+      props.attachToListAsync(props.id, card.payload.id);
+    }
+    
   };
 
   const handleDeleteCard = cardId => {
@@ -39,7 +42,9 @@ const List = props => {
 
   const renderCards = () => {
     return cardIds.map(cardId => {
+      console.log(cardId, "CardId")
       const cardProps = props.cards.find(card => card.id === cardId);
+      console.log("CardProps", cardProps);
       return (
         <Card
           key={cardId}

@@ -12,7 +12,6 @@ class AddCardButton extends React.Component {
     this.state = {
       heading: "",
       content: "",
-      imageUrl: "",
       file: null,
       showModal: false
     };
@@ -33,7 +32,10 @@ class AddCardButton extends React.Component {
     }
     this.props.onCreateCard(content);
     this.setState({
-      showModal: false
+      showModal: false,
+      heading: "",
+      content: "",
+      file: null
     })
   }
 
@@ -45,8 +47,8 @@ class AddCardButton extends React.Component {
 
   hideModal = () => {
     this.setState({
-      showModal: false
-    })
+      showModal: false,
+    });
   }
 
  
