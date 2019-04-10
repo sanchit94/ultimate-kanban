@@ -75,7 +75,7 @@ class Card extends React.Component {
     });
 
     if (isUploaded) {
-      this.hideModal();
+      alert("Image Uploaded");
     }
   }
 
