@@ -120,6 +120,9 @@ const cardTarget = {
   drop(props, monitor) {
     const cardId = monitor.getItem().id;
     const listId = monitor.getItem().listId;
+    if (listId === props.id) {
+      return;
+    }
 
     props.detachFromListAsync(listId, cardId);
     props.attachToListAsync(props.id, cardId);
