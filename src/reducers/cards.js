@@ -28,6 +28,7 @@ export default (state = [], action) => {
           card => card.id === cardId
         );
         newState.splice(index, 1);
+        return null;
       });
       return newState;
     }

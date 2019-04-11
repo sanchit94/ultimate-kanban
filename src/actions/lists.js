@@ -15,7 +15,7 @@ export const createListAsync = name => {
     };
     return Axios.post(`${domain}/list/add`, data)
     .then(res => {
-      if (res.status == 200) {
+      if (res.status === 200) {
         dispatch(createList(data))
         return createList(data)
       }
@@ -42,7 +42,7 @@ export const deleteListAsync = (boardId, listId) => {
     };
     return Axios.post(`${domain}/list/delete`, data)
     .then(res => {
-      if (res.status == 200) {
+      if (res.status === 200) {
         dispatch(deleteList(data));
         return deleteList(data);
       }
@@ -70,7 +70,7 @@ export const updateListAsync = (listId, name, editing = false) => {
     };
     return Axios.post(`${domain}/list/update`, data)
     .then(res => {
-      if (res.status == 200) {
+      if (res.status === 200) {
         dispatch(updateList(data));
         return updateList(data);
       }
@@ -97,7 +97,7 @@ export const attachToListAsync = (listId, cardId) => {
     };
     return Axios.post(`${domain}/list/attach`, data)
     .then(res => {
-      if (res.status == 200) {
+      if (res.status === 200) {
         dispatch(attachToList(data));
         return attachToList(data);
       }
@@ -123,7 +123,7 @@ export const detachFromListAsync = (listId, cardId) => {
     };
     return Axios.post(`${domain}/list/detach`, data)
     .then(res => {
-      if (res.status == 200) {
+      if (res.status === 200) {
         dispatch(detachFromList(data));
         return detachFromList(data);
       }

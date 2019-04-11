@@ -16,7 +16,7 @@ export const createCardAsync = content => {
     }; 
     return Axios.post(`${domain}/card/create`, data)
     .then(res => {
-      if (res.status == 200) {
+      if (res.status === 200) {
         dispatch(createCard(data));
         return createCard(data);
       }
@@ -71,7 +71,7 @@ export const deleteCardAsync = (listId, cardId) => {
     };
     return Axios.post(`${domain}/card/delete`, data)
     .then(res => {
-      if (res.status == 200) {
+      if (res.status === 200) {
         dispatch(deleteCard(data));
         return deleteCard(data)
       }
@@ -94,7 +94,7 @@ export const deleteAllListCards = cardIds => {
   return dispatch => {
     return Axios.post(`${domain}/card/del-all-cards`, cardIds)
       .then(res => {
-        if (res.data == 200) {
+        if (res.data === 200) {
           dispatch({ type: actionTypes.DELETE_FROM_LIST, payload: cardIds });
         }
       })

@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import PropTypes from "prop-types";
+import _ from 'underscore';
 
 import List from "components/List";
 import Editable from "components/ui/Editable";
@@ -22,8 +22,11 @@ class Board extends React.Component {
     const list = this.props.lists[listId];
     let cardsIdsDelete = [];
     list.cardIds.forEach(cardId => cardsIdsDelete.push(cardId));
-    this.props.deleteAllListCards(cardsIdsDelete);
-    this.props.deleteListAsync(this.boardId, listId);
+    _.throttle((cardsIdsDelete, boardId, listId) => {
+      this.props.deleteAllListCards(cardsIdsDelete);
+      this.props.deleteListAsync(boardId, listId);
+    }, 2000)(cardsIdsDelete, this.boardId, listId);
+    
   };
 
   renderLists = () => {

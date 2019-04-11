@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
 import { DropTarget } from "react-dnd";
 import { Icon, Confirm } from "semantic-ui-react";
+import _ from 'underscore';
 
 import Card from "components/card/Card";
 import AddCardButton from "components/AddCardButton";
@@ -24,7 +25,9 @@ class List extends React.Component {
   };
 
   handleDeleteCard = cardId => {
-    this.props.deleteCardAsync(this.props.id, cardId);
+    _.throttle((listId, cardId) => {
+      this.props.deleteCardAsync(listId, cardId);
+    }, 2000)(this.props.id, cardId);    
   };
 
   handleUpdateCard = (id, content, editing = false) => {

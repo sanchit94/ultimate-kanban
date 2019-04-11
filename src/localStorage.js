@@ -19,6 +19,7 @@ export const loadStore = () => {
           listIds: board.listIds,
           name: board.name
         };
+        return null;
       });
       res.boards = {
         boards: boardLocal.boards,

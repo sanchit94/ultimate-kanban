@@ -15,7 +15,7 @@ export const createBoardAsync = content => {
     };
     return Axios.post(`${domain}/board/create`, data)
       .then(res => {
-        if (res.status == 200) {
+        if (res.status === 200) {
           dispatch(createBoard(data));
           return createBoard(data);
         }
@@ -41,7 +41,7 @@ export const attachToBoardAsync = (boardId, listId) => {
     };
     return Axios.post(`${domain}/board/attach`, data)
     .then(res => {
-      if (res.status == 200) {
+      if (res.status === 200) {
         dispatch(attachToBoard(data));
         return attachToBoard(data);
       }
@@ -68,7 +68,7 @@ export const updateBoardAsync = (boardId, name, editing = false) => {
     };
     return Axios.post(`${domain}/board/update`, data)
     .then(res => {      
-      if (res.status == 200) {
+      if (res.status === 200) {
         dispatch(updateBoard(data));
         return updateBoard(data);
       }

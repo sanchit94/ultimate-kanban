@@ -69,6 +69,11 @@ class Card extends React.Component {
     })
   }
 
+  handleDelete = e => {
+    e.stopPropagation();
+    this.props.onDelete(this.props.id);
+  }
+
   uploadFile = () => {
     this.fileInputRef.current.click();
     // this.showModal();
@@ -166,7 +171,7 @@ class Card extends React.Component {
   };
 
   renderCard = () => {
-    const { connectDragSource, id, onClick, onDelete, editing, content, heading } = this.props;
+    const { connectDragSource, id, onClick, editing, content, heading } = this.props;
     return connectDragSource(
       // react-dnd doesn't like refs in outter div
       <div>
@@ -186,7 +191,7 @@ class Card extends React.Component {
           <div className="card__close" onClick={this.showConfirmModal}>
             <Icon name="times" />
           </div>
-          <Confirm open={this.state.open} header='Delete this card?' onCancel={this.hideConfirmModal} onConfirm={() => onDelete(id)} />
+          <Confirm open={this.state.open} header='Delete this card?' onCancel={this.hideConfirmModal} onConfirm={this.handleDelete} />
           {editing && this.renderEditor()}
         </div>
       </div>
