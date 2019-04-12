@@ -141,3 +141,14 @@ export const detachFromList = data => {
     payload: data
   };
 };
+
+export const reorderCard = (listId, source, target) => {
+  return {
+    type: actionTypes.REORDER_CARD,
+    payload: {
+      listId,
+      source,
+      target
+    }
+  };
+}

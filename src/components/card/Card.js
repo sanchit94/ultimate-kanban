@@ -8,6 +8,7 @@ import CardModal from '../ui/CardModal';
 import { domain } from '../../constants';
 import * as ItemTypes from "constants/ItemTypes";
 import { uploadFileAsync } from '../../actions/cards';
+import { detachFromListAsync, attachToListAsync, reorderCard } from '../../actions/lists';
 import Overlay from "../ui/Overlay";
 
 const cardSource = {
@@ -29,15 +30,19 @@ const collect = (connect, monitor) => {
   };
 };
 
-const cardTarget = {
-  // hover(props, monitor, component) {
-  //   console.log("Hovering")
-  //   console.log(props)
-  //   console.log(component)
-  // }
+const cardDropTarget = {
+  
   drop(props, monitor) {
-    console.log(props, "Props")
-    console.log("Drop")
+    console.log(props, "Props");
+    const cardId = monitor.getItem().id;
+    const listId = monitor.getItem().listId;
+    if (listId !== props.listId) {
+      props.detachFromListAsync(listId, cardId);
+      props.attachToListAsync(props.listId, cardId);
+    } else {
+      props.reorderCard(listId, cardId, props.id);
+    }
+    
   }
 }
 
@@ -101,7 +106,6 @@ const Card = (props, ref) => {
       return (
         // react-dnd doesn't like refs in outter div
           <div
-            
             className="card"
             onClick={() => onClick(id)}
           >
@@ -125,7 +129,7 @@ const Card = (props, ref) => {
 
 
     return (
-      <div>
+      <div onDrop={(e) => console.log(e, "OnDrop")}>
         {isDragging ? null : renderCard()}
       </div>
       
@@ -152,12 +156,16 @@ const DraggableItem = props => {
 }
 
 const App = _.flow([
-  DropTarget(ItemTypes.CARD, cardTarget, targetCollect),
-  DragSource(ItemTypes.CARD, cardSource, collect)
+  DropTarget(ItemTypes.CARD, cardDropTarget, targetCollect),
+  DragSource(ItemTypes.CARD, cardSource, collect),
+  connect(mapStateToProps,
+    {
+      uploadFileAsync,
+      detachFromListAsync,
+      attachToListAsync,
+      reorderCard
+     })
 ])(DraggableItem);
 
-export default connect(mapStateToProps,
-  {
-    uploadFileAsync
-   })(App);
+export default App;
 

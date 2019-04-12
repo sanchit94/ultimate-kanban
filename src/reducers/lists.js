@@ -67,6 +67,17 @@ export default (state = defaultState, action) => {
       return newState;
     }
 
+    case actionTypes.REORDER_CARD: {
+      const { listId, source, target } = action.payload;
+      const newState = copyState(state);
+      const list = newState[listId];
+      const sourceIndex = list.cardIds.findIndex(id => source === id);
+      const targetIndex = list.cardIds.findIndex(id => target === id);
+      list.cardIds.splice(sourceIndex, 1);
+      list.cardIds.splice(targetIndex, 0, source);
+      return newState;
+    }
+
     default:
       return state;
   }

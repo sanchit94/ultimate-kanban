@@ -75,9 +75,8 @@ class List extends React.Component {
     });
   };
   render() {
-    const { connectDropTarget, onDelete, id } = this.props;
+    const {  onDelete, id } = this.props;
     return (
-      connectDropTarget(
       <div className="list">
         <div
           className={`list__dragging-over ${this.props.isOver &&
@@ -100,7 +99,6 @@ class List extends React.Component {
 
         </div>
       </div>
-    )
     );
 
   }
@@ -114,30 +112,28 @@ List.propTypes = {
   cards: PropTypes.array.isRequired
 };
 
-const cardTarget = {
-  drop(props, monitor) {
-    if (monitor.didDrop()) {
-      // If you want, you can check whether some nested
-      // target already handled drop
-      return
-    }
-    const cardId = monitor.getItem().id;
-    const listId = monitor.getItem().listId;
-    if (listId === props.id) {
-      return;
-    }
+// const cardTarget = {
+//   drop(props, monitor) {
+  
+//     const cardId = monitor.getItem().id;
+//     const listId = monitor.getItem().listId;
+//     console.log("List dropped")
+//     if (listId === props.id) {
+//       return;
+//     }
 
-    props.detachFromListAsync(listId, cardId);
-    props.attachToListAsync(props.id, cardId);
-  }
-};
+//     props.detachFromListAsync(listId, cardId);
+//     props.attachToListAsync(props.id, cardId);
+//   }
 
-const collect = (dndConnect, monitor) => {
-  return {
-    connectDropTarget: dndConnect.dropTarget(),
-    isOver: monitor.isOver()
-  };
-};
+// };
+
+// const collect = (dndConnect, monitor) => {
+//   return {
+//     connectDropTarget: dndConnect.dropTarget(),
+//     isOver: monitor.isOver()
+//   };
+// };
 
 const mapStateToProps = state => ({
   lists: state.lists,
@@ -155,4 +151,5 @@ export default connect(
     attachToListAsync,
     detachFromListAsync
   }
-)(DropTarget(ItemTypes.CARD, cardTarget, collect)(List));
+)(List);
+// (DropTarget(ItemTypes.CARD, cardTarget, collect) Removing this as a drop target because nested dropTargets are not working for some reason.
