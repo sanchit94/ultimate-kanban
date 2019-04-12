@@ -1,8 +1,9 @@
-import React from "react";
-import { DragSource } from "react-dnd";
+import React, { useState } from "react";
+import { DragSource, DropTarget } from "react-dnd";
 import { connect } from 'react-redux';
-import { Icon, Image, Confirm } from "semantic-ui-react";
+import { Icon, Image, Confirm, Ref } from "semantic-ui-react";
 
+import _ from 'lodash';
 import CardModal from '../ui/CardModal';
 import { domain } from '../../constants';
 import * as ItemTypes from "constants/ItemTypes";
@@ -28,47 +29,62 @@ const collect = (connect, monitor) => {
   };
 };
 
-//
+const cardTarget = {
+  // hover(props, monitor, component) {
+  //   console.log("Hovering")
+  //   console.log(props)
+  //   console.log(component)
+  // }
+  drop(props, monitor) {
+    console.log(props, "Props")
+    console.log("Drop")
+  }
+}
+
+const targetCollect = (dndConnect, monitor) => {
+  return {
+    connectDropTarget: dndConnect.dropTarget(),
+    isOver: monitor.isOver()
+  };
+}
 
 //
 
-const Card = React.forwardRef(
-  ({ isDragging, connectDragSource, connectDropTarget }, ref) => {
-    const cardRef = useRef(null);
-    connectDragSource(cardRef);
-    connectDropTarget(cardRef);
-    const opacity = isDragging ? 0 : 1;
-    useImperativeHandle(ref, () => ({
-      getNode: () => cardRef.current,
-    }));
+//
+
+const Card = (props, ref) => {
+    const [opened, toggleOpen] = useState(false);
+    const { isDragging } = props;
+    // const cardRef = useRef(null);
+    // connectDragSource(cardRef)
+    // connectDropTarget(cardRef)
+    // useImperativeHandle(ref, () => ({
+    //   getNode: () => cardRef.current,
+    // }));
 
     const handleDelete = e => {
       e.stopPropagation();
-      this.props.onDelete(this.props.id);
+      props.onDelete(props.id);
     }
-  
+
     const showConfirmModal = e => {
       e.stopPropagation();
-      this.setState({
-        open: true
-      });
+      toggleOpen(!opened);
     }
   
     const hideConfirmModal = e => {
       e.stopPropagation();
-      this.setState({
-        open: false
-      });
+      toggleOpen(!opened);
     }
   
     const cardImage = () => {
       return (
-      <Image src={`${domain}/uploads/${this.props.cardImage}`} fluid alt="Cannot load" />
+      <Image src={`${domain}/uploads/${props.cardImage}`} fluid alt="Cannot load" />
     )}
   
     const renderEditor = () => {
       // const location = this.getLocation();
-      const { id, onUpdate, editing } = this.props;
+      const { id, onUpdate, editing } = props;
       return (
         <Overlay onDismiss={() => null}>
            <CardModal 
@@ -81,17 +97,15 @@ const Card = React.forwardRef(
     };
   
     const renderCard = () => {
-      const { connectDragSource, id, onClick, editing, content, heading, priority, cardImage } = this.props;
-      console.log(this.props);
-      return connectDragSource(
+      const {  id, onClick, editing, content, heading, priority } = props;
+      return (
         // react-dnd doesn't like refs in outter div
-        <div>
           <div
-            ref={this.cardRef}
+            
             className="card"
             onClick={() => onClick(id)}
           >
-            {cardImage && cardImage()}
+            {props.cardImage && cardImage()}
             <div className="mt-2"></div>
             <div className={`card__labels__${priority}`}>
             </div>
@@ -102,28 +116,48 @@ const Card = React.forwardRef(
             <div className="card__close" onClick={showConfirmModal}>
               <Icon name="times" />
             </div>
-            <Confirm open={this.state.open} header='Delete this card?' onCancel={hideConfirmModal} onConfirm={handleDelete} />
+            <Confirm open={opened} header='Delete this card?' onCancel={hideConfirmModal} onConfirm={handleDelete} />
             {editing && renderEditor()}
           </div>
-        </div>
+
       );
     };
 
 
     return (
-      isDragging ? null : renderCard()
-    )
-  },
-)
+      <div>
+        {isDragging ? null : renderCard()}
+      </div>
+      
+    );
+  }
+
 //
 //
 
 
 const mapStateToProps = state => ({
   cards: state.cards
-})
+});
+
+const DraggableItem = props => {
+  const { connectDragSource, connectDropTarget } = props
+  return (
+    <Ref innerRef={instance => {
+      connectDropTarget(instance);
+      connectDragSource(instance)}}>
+      <Card {...props} />
+    </Ref>
+  )
+}
+
+const App = _.flow([
+  DropTarget(ItemTypes.CARD, cardTarget, targetCollect),
+  DragSource(ItemTypes.CARD, cardSource, collect)
+])(DraggableItem);
 
 export default connect(mapStateToProps,
-   {
-     uploadFileAsync
-    })(DragSource(ItemTypes.CARD, cardSource, collect)(Card));
+  {
+    uploadFileAsync
+   })(App);
+

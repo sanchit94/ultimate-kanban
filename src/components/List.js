@@ -61,9 +61,7 @@ class List extends React.Component {
 
   renderCards = () => {
     return this.props.cardIds.map(cardId => {
-      console.log(cardId, "CardId")
       const cardProps = this.props.cards.find(card => card.id === cardId);
-      console.log("CardProps", cardProps);
       return (
         <Card
           key={cardId}
@@ -118,6 +116,11 @@ List.propTypes = {
 
 const cardTarget = {
   drop(props, monitor) {
+    if (monitor.didDrop()) {
+      // If you want, you can check whether some nested
+      // target already handled drop
+      return
+    }
     const cardId = monitor.getItem().id;
     const listId = monitor.getItem().listId;
     if (listId === props.id) {
