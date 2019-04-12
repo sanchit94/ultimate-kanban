@@ -1,11 +1,12 @@
 import React from "react";
 import { DragSource } from "react-dnd";
 import { connect } from 'react-redux';
-import { Icon, Modal, Form, Button, Image, Confirm, Dropdown } from "semantic-ui-react";
+import { Icon, Image, Confirm } from "semantic-ui-react";
 
+import CardModal from '../ui/CardModal';
 import { domain } from '../../constants';
 import * as ItemTypes from "constants/ItemTypes";
-import { uploadFileAsync } from '../../actions/cards'
+import { uploadFileAsync } from '../../actions/cards';
 import Overlay from "../ui/Overlay";
 
 const cardSource = {
@@ -27,69 +28,17 @@ const collect = (connect, monitor) => {
   };
 };
 
-const options = [
-  { key: 1, text: 'High', value: 1 },
-  { key: 2, text: 'Medium', value: 2 },
-  { key: 3, text: 'Low', value: 3 },
-];
 
 class Card extends React.Component {
   cardRef = React.createRef();
 
-  constructor(props) {
-    super(props);
-    const index = this.props.cards.findIndex(
-      card => card.id === this.props.id
-    );
-    console.log(this.props.id);
-
-    this.state = {
-      heading: this.props.cards[index].heading,
-      content: this.props.cards[index].content,
-      cardImage: this.props.cards[index].cardImage,
-      open: false,
-      showModal: false,
-      priority: this.props.cards[index].priority || 2
-    };
-    this.fileInputRef = React.createRef();
-  }
-
-  handleChange = e => {
-    this.setState({
-      [e.target.name] : e.target.value
-    })
-  }
-
-  handleSubmit = e => {
-    e && e.preventDefault();
-    const content = this.state;
-    this.props.onUpdate(this.props.id, content);
-    this.setState({
-      showModal: false
-    })
+  state = {
+    cardImage: ''
   }
 
   handleDelete = e => {
     e.stopPropagation();
     this.props.onDelete(this.props.id);
-  }
-
-  uploadFile = () => {
-    this.fileInputRef.current.click();
-    // this.showModal();
-
-  }
-  
-  fileChange = async e => {
-    const file = e.target.files[0];
-    const isUploaded = await this.props.uploadFileAsync(file, this.props.id);
-    this.setState({
-      cardImage: file.name
-    });
-
-    if (isUploaded) {
-      alert("Image Uploaded");
-    }
   }
 
   showConfirmModal = e => {
@@ -106,72 +55,33 @@ class Card extends React.Component {
     });
   }
 
-  hideModal = () => {
-    const content = this.state;
-    this.props.onUpdate(this.props.id, content, false);
-  }
+  updateImage = () => {
 
-  handlePriorityChange = (e, { value }) => {
-    this.setState({
-      priority: value
-    })
   }
 
   cardImage = () => {
     return (
-    <Image src={`${domain}/uploads/${this.state.cardImage}`} fluid alt="Cannot load" />
+    <Image src={`${domain}/uploads/${this.props.cardImage}`} fluid alt="Cannot load" />
   )}
 
   renderEditor = () => {
     // const location = this.getLocation();
+    const { id, onUpdate, editing } = this.props;
     return (
       <Overlay onDismiss={() => null}>
-         <Modal size="tiny" open={this.props.editing}>
-          <Modal.Header>Edit Card Details</Modal.Header>
-          <Modal.Content>
-            <Form onSubmit={this.handleSubmit}>
-            <Form.Field>
-              <label>Heading</label>
-              <input name='heading' value={this.state.heading} onChange={this.handleChange} />
-            </Form.Field>
-            <Form.Field>
-              <label>Description</label>
-              <textarea name='content' value={this.state.content} onChange={this.handleChange} />
-            </Form.Field>
-            <Form.Field>
-            <label>Priority</label>
-            <Dropdown
-            onChange={this.handlePriorityChange}
-            options={options}
-            placeholder='Choose an option'
-            selection
-            value={this.state.priority}
-          />
-            </Form.Field>
-            <Button type='submit'>Submit</Button>
-            <Button onClick={this.hideModal}>Cancel</Button>
-          </Form>
-          <div className="mt-2"></div>
-          <Button
-            content="Choose Image"
-            labelPosition="left"
-            icon="file"
-            onClick={this.uploadFile}
-          />
-          <input
-            ref={this.fileInputRef}
-            type="file"
-            hidden
-            onChange={this.fileChange}
-          />
-          </Modal.Content>
-        </Modal>
+         <CardModal 
+          id={id}
+          onUpdate={onUpdate}
+          editing={editing}
+          cardImage={this.state.cardImage}
+         />
       </Overlay>
     );
   };
 
   renderCard = () => {
-    const { connectDragSource, id, onClick, editing, content, heading } = this.props;
+    const { connectDragSource, id, onClick, editing, content, heading, priority, cardImage } = this.props;
+    console.log(this.props);
     return connectDragSource(
       // react-dnd doesn't like refs in outter div
       <div>
@@ -180,9 +90,9 @@ class Card extends React.Component {
           className="card"
           onClick={() => onClick(id)}
         >
-          {this.state.cardImage && this.cardImage()}
+          {cardImage && this.cardImage()}
           <div className="mt-2"></div>
-          <div className={`card__labels__${this.state.priority}`}>
+          <div className={`card__labels__${priority}`}>
           </div>
           <div className="card__header">{heading}</div>
           <div className="card__content">

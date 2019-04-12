@@ -7,7 +7,7 @@ import _ from 'underscore';
 
 import Card from "components/card/Card";
 import AddCardButton from "components/AddCardButton";
-import { createCardAsync, updateCardAsync, deleteCardAsync } from "actions/cards";
+import { createCardAsync, updateCardAsync, updateCard, deleteCardAsync } from "actions/cards";
 import { attachToListAsync, detachFromListAsync } from "actions/lists";
 import * as ItemTypes from "constants/ItemTypes";
 
@@ -42,7 +42,7 @@ class List extends React.Component {
   handleClick = id => {
     const card = this.props.cards.find(card => card.id === id);
     card.editing = true;
-    this.props.updateCardAsync(card);
+    this.props.updateCard(card);
   };
 
   showConfirmModal = e => {
@@ -147,6 +147,7 @@ export default connect(
   {
     createCardAsync,
     updateCardAsync,
+    updateCard,
     deleteCardAsync,
     attachToListAsync,
     detachFromListAsync
