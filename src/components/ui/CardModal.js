@@ -56,10 +56,6 @@ class CardModal extends Component {
       fileChange = async e => {
         const file = e.target.files[0];
         const isUploaded = await this.props.uploadFileAsync(file, this.props.id);
-        // this.setState({
-        //   cardImage: file.name
-        // });
-    
         if (isUploaded) {
           alert("Image Uploaded");
         }

@@ -28,91 +28,96 @@ const collect = (connect, monitor) => {
   };
 };
 
+//
 
-class Card extends React.Component {
-  cardRef = React.createRef();
+//
 
-  state = {
-    cardImage: ''
-  }
+const Card = React.forwardRef(
+  ({ isDragging, connectDragSource, connectDropTarget }, ref) => {
+    const cardRef = useRef(null);
+    connectDragSource(cardRef);
+    connectDropTarget(cardRef);
+    const opacity = isDragging ? 0 : 1;
+    useImperativeHandle(ref, () => ({
+      getNode: () => cardRef.current,
+    }));
 
-  handleDelete = e => {
-    e.stopPropagation();
-    this.props.onDelete(this.props.id);
-  }
-
-  showConfirmModal = e => {
-    e.stopPropagation();
-    this.setState({
-      open: true
-    });
-  }
-
-  hideConfirmModal = e => {
-    e.stopPropagation();
-    this.setState({
-      open: false
-    });
-  }
-
-  updateImage = () => {
-
-  }
-
-  cardImage = () => {
-    return (
-    <Image src={`${domain}/uploads/${this.props.cardImage}`} fluid alt="Cannot load" />
-  )}
-
-  renderEditor = () => {
-    // const location = this.getLocation();
-    const { id, onUpdate, editing } = this.props;
-    return (
-      <Overlay onDismiss={() => null}>
-         <CardModal 
-          id={id}
-          onUpdate={onUpdate}
-          editing={editing}
-          cardImage={this.state.cardImage}
-         />
-      </Overlay>
-    );
-  };
-
-  renderCard = () => {
-    const { connectDragSource, id, onClick, editing, content, heading, priority, cardImage } = this.props;
-    console.log(this.props);
-    return connectDragSource(
-      // react-dnd doesn't like refs in outter div
-      <div>
-        <div
-          ref={this.cardRef}
-          className="card"
-          onClick={() => onClick(id)}
-        >
-          {cardImage && this.cardImage()}
-          <div className="mt-2"></div>
-          <div className={`card__labels__${priority}`}>
+    const handleDelete = e => {
+      e.stopPropagation();
+      this.props.onDelete(this.props.id);
+    }
+  
+    const showConfirmModal = e => {
+      e.stopPropagation();
+      this.setState({
+        open: true
+      });
+    }
+  
+    const hideConfirmModal = e => {
+      e.stopPropagation();
+      this.setState({
+        open: false
+      });
+    }
+  
+    const cardImage = () => {
+      return (
+      <Image src={`${domain}/uploads/${this.props.cardImage}`} fluid alt="Cannot load" />
+    )}
+  
+    const renderEditor = () => {
+      // const location = this.getLocation();
+      const { id, onUpdate, editing } = this.props;
+      return (
+        <Overlay onDismiss={() => null}>
+           <CardModal 
+            id={id}
+            onUpdate={onUpdate}
+            editing={editing}
+           />
+        </Overlay>
+      );
+    };
+  
+    const renderCard = () => {
+      const { connectDragSource, id, onClick, editing, content, heading, priority, cardImage } = this.props;
+      console.log(this.props);
+      return connectDragSource(
+        // react-dnd doesn't like refs in outter div
+        <div>
+          <div
+            ref={this.cardRef}
+            className="card"
+            onClick={() => onClick(id)}
+          >
+            {cardImage && cardImage()}
+            <div className="mt-2"></div>
+            <div className={`card__labels__${priority}`}>
+            </div>
+            <div className="card__header">{heading}</div>
+            <div className="card__content">
+              <p>{content}</p>
+            </div>
+            <div className="card__close" onClick={showConfirmModal}>
+              <Icon name="times" />
+            </div>
+            <Confirm open={this.state.open} header='Delete this card?' onCancel={hideConfirmModal} onConfirm={handleDelete} />
+            {editing && renderEditor()}
           </div>
-          <div className="card__header">{heading}</div>
-          <div className="card__content">
-            <p>{content}</p>
-          </div>
-          <div className="card__close" onClick={this.showConfirmModal}>
-            <Icon name="times" />
-          </div>
-          <Confirm open={this.state.open} header='Delete this card?' onCancel={this.hideConfirmModal} onConfirm={this.handleDelete} />
-          {editing && this.renderEditor()}
         </div>
-      </div>
-    );
-  };
+      );
+    };
 
-  render() {
-    const { isDragging } = this.props;
-    return isDragging ? null : this.renderCard();
-  }
-}
+
+    return (
+      isDragging ? null : renderCard()
+    )
+  },
+)
+//
+//
+
 
 const mapStateToProps = state => ({
   cards: state.cards
