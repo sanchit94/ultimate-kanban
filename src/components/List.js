@@ -7,7 +7,7 @@ import _ from 'underscore';
 
 import Card from "components/card/Card";
 import AddCardButton from "components/AddCardButton";
-import { createCardAsync, updateCardAsync, deleteCardAsync } from "actions/cards";
+import { createCardAsync, updateCardAsync, updateCard, deleteCardAsync } from "actions/cards";
 import { attachToListAsync, detachFromListAsync } from "actions/lists";
 import * as ItemTypes from "constants/ItemTypes";
 
@@ -42,7 +42,7 @@ class List extends React.Component {
   handleClick = id => {
     const card = this.props.cards.find(card => card.id === id);
     card.editing = true;
-    this.props.updateCardAsync(card);
+    this.props.updateCard(card);
   };
 
   showConfirmModal = e => {
@@ -61,9 +61,7 @@ class List extends React.Component {
 
   renderCards = () => {
     return this.props.cardIds.map(cardId => {
-      console.log(cardId, "CardId")
       const cardProps = this.props.cards.find(card => card.id === cardId);
-      console.log("CardProps", cardProps);
       return (
         <Card
           key={cardId}
@@ -77,9 +75,8 @@ class List extends React.Component {
     });
   };
   render() {
-    const { connectDropTarget, onDelete, id } = this.props;
+    const {  onDelete, id } = this.props;
     return (
-      connectDropTarget(
       <div className="list">
         <div
           className={`list__dragging-over ${this.props.isOver &&
@@ -102,7 +99,6 @@ class List extends React.Component {
 
         </div>
       </div>
-    )
     );
 
   }
@@ -116,22 +112,28 @@ List.propTypes = {
   cards: PropTypes.array.isRequired
 };
 
-const cardTarget = {
-  drop(props, monitor) {
-    const cardId = monitor.getItem().id;
-    const listId = monitor.getItem().listId;
+// const cardTarget = {
+//   drop(props, monitor) {
+  
+//     const cardId = monitor.getItem().id;
+//     const listId = monitor.getItem().listId;
+//     console.log("List dropped")
+//     if (listId === props.id) {
+//       return;
+//     }
 
-    props.detachFromListAsync(listId, cardId);
-    props.attachToListAsync(props.id, cardId);
-  }
-};
+//     props.detachFromListAsync(listId, cardId);
+//     props.attachToListAsync(props.id, cardId);
+//   }
 
-const collect = (dndConnect, monitor) => {
-  return {
-    connectDropTarget: dndConnect.dropTarget(),
-    isOver: monitor.isOver()
-  };
-};
+// };
+
+// const collect = (dndConnect, monitor) => {
+//   return {
+//     connectDropTarget: dndConnect.dropTarget(),
+//     isOver: monitor.isOver()
+//   };
+// };
 
 const mapStateToProps = state => ({
   lists: state.lists,
@@ -144,8 +146,10 @@ export default connect(
   {
     createCardAsync,
     updateCardAsync,
+    updateCard,
     deleteCardAsync,
     attachToListAsync,
     detachFromListAsync
   }
-)(DropTarget(ItemTypes.CARD, cardTarget, collect)(List));
+)(List);
+// (DropTarget(ItemTypes.CARD, cardTarget, collect) Removing this as a drop target because nested dropTargets are not working for some reason.

@@ -116,11 +116,11 @@ export const attachToList = data => {
 };
 
 export const detachFromListAsync = (listId, cardId) => {
+  const data = {
+    cardId,
+    listId
+  };
   return dispatch => {
-    const data = {
-      cardId,
-      listId
-    };
     return Axios.post(`${domain}/list/detach`, data)
     .then(res => {
       if (res.status === 200) {
@@ -141,3 +141,29 @@ export const detachFromList = data => {
     payload: data
   };
 };
+
+export const reorderCardAsync = (listId, source, target) => {
+  const data = {
+    listId,
+    source,
+    target
+  };
+  return dispatch => {
+    return Axios.post(`${domain}/list/reorder`, data)
+    .then(res => {
+      if (res.status === 200) {
+        dispatch(reorderCard(data))
+      }
+    })
+    .catch(err => console.log(err));
+  }
+  
+
+}
+
+export const reorderCard = data => {
+  return {
+    type: actionTypes.REORDER_CARD,
+    payload: data
+  };
+}
