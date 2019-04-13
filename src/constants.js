@@ -3,5 +3,5 @@ export const ItemTypes = {
   LIST: "list"
 };
 
-// export const domain = "https://boiling-earth-76159.herokuapp.com";
-export const domain = "http://localhost:3002";
+export const domain = "https://boiling-earth-76159.herokuapp.com";
+// export const domain = "http://localhost:3002";
