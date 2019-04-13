@@ -41,7 +41,6 @@ class AddCardButton extends React.Component {
       showModal: false,
       heading: "",
       content: "",
-      file: null,
       priority: 2
     })
   }

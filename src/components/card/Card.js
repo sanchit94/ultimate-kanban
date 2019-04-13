@@ -8,7 +8,7 @@ import CardModal from '../ui/CardModal';
 import { domain } from '../../constants';
 import * as ItemTypes from "constants/ItemTypes";
 import { uploadFileAsync } from '../../actions/cards';
-import { detachFromListAsync, attachToListAsync, reorderCard } from '../../actions/lists';
+import { detachFromListAsync, attachToListAsync, reorderCardAsync } from '../../actions/lists';
 import Overlay from "../ui/Overlay";
 
 const cardSource = {
@@ -40,7 +40,10 @@ const cardDropTarget = {
       props.detachFromListAsync(listId, cardId);
       props.attachToListAsync(props.listId, cardId);
     } else {
-      props.reorderCard(listId, cardId, props.id);
+      _.throttle((listId, cardId, id) => {
+        props.reorderCardAsync(listId, cardId, id);
+      }, 2000)(listId, cardId, props.id);
+      
     }
     
   }
@@ -163,7 +166,7 @@ const App = _.flow([
       uploadFileAsync,
       detachFromListAsync,
       attachToListAsync,
-      reorderCard
+      reorderCardAsync
      })
 ])(DraggableItem);
 
