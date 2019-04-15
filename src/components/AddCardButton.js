@@ -10,6 +10,7 @@ const options = [
   { key: 1, text: 'High', value: 1 },
   { key: 2, text: 'Medium', value: 2 },
   { key: 3, text: 'Low', value: 3 },
+  { key: 4, text: 'No priority', value: 4}
 ];
 
 class AddCardButton extends React.Component {
@@ -57,7 +58,11 @@ class AddCardButton extends React.Component {
     });
   }
 
- 
+  handlePriorityChange = (e, { value }) => {
+    this.setState({
+      priority: value
+    })
+  }
   
   button = (
     <button
@@ -86,12 +91,12 @@ class AddCardButton extends React.Component {
       </Form.Field>
       <Form.Field>
       <label>Priority</label>
-            <Dropdown
-            onChange={this.handlePriorityChange}
-            options={options}
-            placeholder='Choose an option'
-            selection
-            value={this.state.priority}
+          <Dropdown
+          onChange={this.handlePriorityChange}
+          options={options}
+          placeholder='Choose an option'
+          selection
+          value={this.state.priority}
           />
       </Form.Field>
       <Button type='submit'>Submit</Button>

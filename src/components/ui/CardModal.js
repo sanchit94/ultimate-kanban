@@ -8,6 +8,7 @@ const options = [
     { key: 1, text: 'High', value: 1 },
     { key: 2, text: 'Medium', value: 2 },
     { key: 3, text: 'Low', value: 3 },
+    { key: 4, text: 'No priority', value: 4}
   ];
   
 
